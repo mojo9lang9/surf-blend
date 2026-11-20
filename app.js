@@ -90,7 +90,7 @@
     g.append(el('div', { class: 'rh', text: 'Tide' }));
     const tv = hours.filter((x) => x.tide != null), tc = el('div', { class: 'tide' });
     if (tv.length > 1) {
-      const n = hours.length, W = n * 40, H = 54, lo = Math.min(...tv.map((x) => x.tide)) - 0.4, hi = Math.max(...tv.map((x) => x.tide)) + 0.4;
+      const n = hours.length, W = n * 40, H = 70, lo = Math.min(...tv.map((x) => x.tide)) - 0.4, hi = Math.max(...tv.map((x) => x.tide)) + 0.4;
       const X = (k) => (k + 0.5) * 40, Y = (v) => 8 + (H - 20) * (1 - (v - lo) / (hi - lo || 1));
       const t = sv('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', width: '100%', height: H, role: 'img', 'aria-label': 'Tide through the day' });
       hours.forEach((x, k) => { if (x.st === 'tide') t.append(sv('rect', { x: k * 40 + 1, y: 0, width: 38, height: H, rx: 5, fill: 'var(--q0)', opacity: .3 }));
@@ -113,19 +113,33 @@
     return el('div', { class: small ? 'pills sm' : 'pills' }, ps.map((p) => el('div', { class: 'pill', style: `background:${p.st === 'dark' ? 'var(--dk)' : p.st === 'off' ? 'var(--q0)' : color(p.score)}` })));
   }
 
+  /* drive times: Joe's own numbers from Keene by default; real road times (OpenStreetMap routing) when a zip is entered */
+  const driveMin = (sp) => state.drives && state.drives[sp.spot] != null ? state.drives[sp.spot] : mins(sp.drive);
+  const fmtDrive = (m) => m >= 999 ? '' : `${Math.floor(m / 60)}h${String(Math.round(m % 60)).padStart(2, '0')}`;
+  const alertsFor = (sp) => (state.alerts || []).filter((a) => a.zones.some((z) => (sp.nws_zones || []).includes(z)));
+
   function selPanel() {
     const r = rows.find((x) => x.spot === state.spot) || rows[0], s = byId[r.spot], i = state.day, p = `d${i}_`, box = $('sel');
     box.textContent = '';
     const days = el('div', { class: 'days', role: 'group', 'aria-label': 'Day for this break' }, dates.map((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === i), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; return b; }));
     const has = r[p + 'score'] != null;
-    const verdict = !has ? 'No forecast for this day.' : r[p + 'st'] === 'off' ? (w => w === 'flat' ? 'Flat all day' : 'Off: ' + w)(r[p + 'why'] || 'flat') : `Best ${r[p + 'window']} · ${r[p + 'wind']}${r[p + 'tide'] ? ' · tide ' + r[p + 'tide'] : ''}`;
-    const srcs = has ? el('div', { class: 'srcline' }, [['SC', r[p + 'sc']], ['SL', r[p + 'sl']], ['SF', r[p + 'sf']]].map(([k, v]) => el('span', {}, [el('b', { text: k }), document.createTextNode(' ' + String(v).replace(/ ft$/, ''))]))) : null;
+    const verdict = el('div', { class: 'verdict' });
+    if (!has) verdict.textContent = 'No forecast for this day.';
+    else if (r[p + 'st'] === 'off') verdict.textContent = (w => w === 'flat' ? 'Flat all day' : 'Off: ' + w)(r[p + 'why'] || 'flat');
+    else { verdict.append(document.createTextNode(`Best ${r[p + 'window']} · `));
+      verdict.append(s.windy_url ? el('a', { href: s.windy_url, target: '_blank', rel: 'noopener', title: 'Wind on Windy', text: r[p + 'wind'] }) : document.createTextNode(r[p + 'wind']));
+      if (r[p + 'tide']) verdict.append(document.createTextNode(' · tide ' + r[p + 'tide'])); }
+    const src = [['Surf Captain', r[p + 'sc_win']], ['Surfline', r[p + 'sl_win']], ['surf-forecast', r[p + 'sf_win']]].filter((x) => x[1]);
+    const srcs = has && src.length ? el('div', { class: 'srcline' }, src.map(([k, v]) => el('span', {}, [document.createTextNode(k + ' '), el('b', { text: v })]))) : null;
+    const swell = has && r[p + 'sw1'] ? el('div', { class: 'swell' }, [el('span', { class: 'lbl', text: r[p + 'combo'] ? 'Combo swell' : 'Swell' }),
+      el('span', { text: r[p + 'sw1'] }), r[p + 'sw2'] ? el('span', { class: r[p + 'combo'] ? '' : 'sub', text: ' + ' + r[p + 'sw2'] + (r[p + 'combo'] ? '' : ' (minor)') }) : null]) : null;
+    const al = alertsFor(s);
     box.append(el('div', { class: 'sel-head' }, [el('div', { class: 'ringcol' }, [ring(r, i, 150), has ? pills(r, i) : null]), el('div', {}, [
-      el('div', { class: 'lbl', text: `${s.state} · ${s.drive} drive${s.sc_source && !/^own/.test(s.sc_source) ? ' · uses ' + s.sc_source : ''}` }),
+      el('div', { class: 'lbl', text: `${s.state} · ${fmtDrive(driveMin(s))} drive${state.zip ? ' from ' + state.zip : ''}${s.sc_source && !/^own/.test(s.sc_source) ? ' · uses ' + s.sc_source : ''}` }),
       el('div', { class: 'sel-name', text: s.name }),
-      el('div', { class: 'verdict', text: verdict }),
-      has && r[p + 'swtxt'] ? el('div', { class: 'sub', text: `Swell ${r[p + 'swtxt']}` }) : null,
+      verdict, swell,
       has && r[p + 'wx'] ? el('div', { class: 'sub', text: r[p + 'wx'] }) : null,
+      ...al.map((a) => el('a', { class: 'alert-chip', href: a.url, target: '_blank', rel: 'noopener', text: `⚠ ${a.event}${a.ends ? ' until ' + a.ends : ''}` })),
       srcs])]));
     box.append(el('div', { style: 'margin-top:14px' }, [days]));
     if (has) box.append(hourStrip(r, i));
@@ -133,7 +147,7 @@
     if (s.shelter_note) d.append(el('b', { text: s.shelter_note + ' ' }));
     d.append(document.createTextNode(s.guide || ''));
     box.append(d);
-    const L = [['Surf Captain', s.sc_page], ['Surfline', s.sl_page], ['surf-forecast', s.sf_page], ['Windy', s.windy_url]].filter((x) => x[1]);
+    const L = [['Surf Captain', s.sc_page], ['Surfline', s.sl_page], ['surf-forecast', s.sf_page]].filter((x) => x[1]);
     box.append(el('div', { class: 'links' }, L.map(([t, u]) => el('a', { href: u, target: '_blank', rel: 'noopener', text: t + ' ↗' }))));
     if (camShown !== s.spot) { camShown = s.spot; camPanel(s); }
   }
@@ -143,7 +157,7 @@
   const MULT = { 3: 1, 2: 0.6, 1: 0.3 };
   const value = (r, i) => { const p = `d${i}_`; if (r[p + 'score'] == null) return -1; if (r[p + 'st'] === 'off') return 0; return (r[p + 'mid'] || 0) * (MULT[r[p + 'score']] || 0); };
   function ranked(i = state.day) {
-    return rows.slice().sort((a, b) => (b.pick - a.pick) || (value(b, i) - value(a, i)) || (mins(byId[a.spot].drive) - mins(byId[b.spot].drive)));
+    return rows.slice().sort((a, b) => (b.pick - a.pick) || (value(b, i) - value(a, i)) || (driveMin(byId[a.spot]) - driveMin(byId[b.spot])));
   }
 
   function list() {
@@ -151,19 +165,55 @@
     dates.forEach((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === state.day), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; dbox.append(b); });
     ranked().forEach((r) => {
       const s = byId[r.spot], p = `d${state.day}_`;
-      const meta = r[p + 'score'] == null ? 'no data' : r[p + 'st'] === 'off' ? 'off' : r[p + 'window'];
+      const meta = r[p + 'score'] == null ? 'no data' : r[p + 'st'] === 'off' ? (r[p + 'why'] === 'flat' || !r[p + 'why'] ? 'flat' : 'off · ' + r[p + 'why']) : 'best ' + r[p + 'window'];
       const others = dates.map((d, k) => k).filter((k) => k !== state.day);
+      const al = alertsFor(s);
       const b = el('button', { class: 'tile' + (r.pick ? '' : ' ref'), 'aria-current': String(r.spot === state.spot) }, [
-        el('div', { class: 'r1' }, [el('span', { class: 'rname', text: s.name }), el('span', { class: 'rmeta', text: `${s.state} · ${s.drive}` })]),
-        el('div', { class: 'tmain' }, [el('div', { class: 'ringcol' }, [ring(r, state.day, 92), r[p + 'score'] != null ? pills(r, state.day) : null]),
-          el('div', { class: 'tday' }, [el('div', { class: 'lbl', text: dayLbl(dates[state.day], state.day, todayI) }), el('div', { class: 'rmeta', text: meta })])]),
-        el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 40), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k], k, todayI) })])))]);
+        el('div', { class: 'r1' }, [el('span', { class: 'rname', text: s.name }), el('span', { class: 'rmeta', text: `${s.state} · ${fmtDrive(driveMin(s))}` })]),
+        el('div', { class: 'rmeta tmeta', text: meta }),
+        al.length ? el('div', { class: 'alert-badge', title: al.map((a) => a.event).join(', '), text: '⚠ ' + al[0].event + (al.length > 1 ? ` +${al.length - 1}` : '') }) : null,
+        el('div', { class: 'ringcol big' }, [ring(r, state.day, 96), r[p + 'score'] != null ? pills(r, state.day) : el('div', { class: 'pills' })]),
+        el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 42), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k], k, todayI) })])))]);
       b.onclick = () => { state.spot = r.spot; state.cam = 0; try { history.replaceState(null, '', '#' + r.spot); } catch (e) {} render(); $('sel').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
       box.append(b);
     });
   }
 
-  function render() { if (!state.spot || !byId[state.spot]) state.spot = ranked(Math.max(0, todayI))[0].spot; selPanel(); list(); }
+  /* live NWS alerts: land zones for each break plus its coastal waters (Atlantic marine region) */
+  function loadAlerts() {
+    const want = /gale|storm|hurricane|tropical|small craft|high surf|rip current|coastal flood|flood|thunderstorm|tornado|fog|marine|hazardous seas|high wind|wind advisory|blizzard|tsunami/i;
+    const zonesOf = (f) => (f.properties.affectedZones || []).map((u) => u.split('/').pop()).concat((f.properties.geocode && f.properties.geocode.UGC) || []);
+    const q = (u) => fetch(u, { headers: { Accept: 'application/geo+json' } }).then((r) => r.ok ? r.json() : { features: [] }).catch(() => ({ features: [] }));
+    Promise.all([q('https://api.weather.gov/alerts/active?area=ME,NH,MA,RI'), q('https://api.weather.gov/alerts/active?region=AT')]).then(([a, b]) => {
+      const seen = new Set(), mine = new Set(spots.flatMap((sp) => sp.nws_zones || []));
+      state.alerts = a.features.concat(b.features).filter((f) => { const id = f.properties.id; if (seen.has(id)) return false; seen.add(id); return want.test(f.properties.event); })
+        .map((f) => ({ event: f.properties.event, zones: zonesOf(f), url: f.properties['@id'] || 'https://www.weather.gov/', area: f.properties.areaDesc || '',
+          ends: (f.properties.ends || f.properties.expires) ? new Date(f.properties.ends || f.properties.expires).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', timeZone: 'America/New_York' }) : '' }))
+        .filter((x) => x.zones.some((z) => mine.has(z)));
+      const bar = $('alerts'); bar.textContent = '';
+      const groups = {}; state.alerts.forEach((x) => { const names = spots.filter((sp) => x.zones.some((z) => (sp.nws_zones || []).includes(z)) && sp.pick !== false).map((sp) => sp.name); (groups[x.event] = groups[x.event] || { a: x, n: new Set() }); names.forEach((n) => groups[x.event].n.add(n)); });
+      Object.values(groups).forEach(({ a, n }) => bar.append(el('a', { class: 'alert-row', href: a.url, target: '_blank', rel: 'noopener' }, [el('b', { text: '⚠ ' + a.event }), document.createTextNode(`${a.ends ? ' until ' + a.ends : ''} · ${[...n].slice(0, 6).join(', ')}${n.size > 6 ? ` +${n.size - 6} more` : ''}`)])));
+      bar.hidden = !bar.childNodes.length;
+      if (rows.length) render();
+    });
+  }
+
+  /* zip → road drive times for every break */
+  function setZip(zip) {
+    const msg = $('zipmsg');
+    if (!/^\d{5}$/.test(zip)) { state.zip = null; state.drives = null; try { localStorage.removeItem('sb-zip'); } catch (e) {} msg.textContent = 'from Keene'; render(); return; }
+    msg.textContent = 'routing…';
+    fetch(`https://api.zippopotam.us/us/${zip}`).then((r) => r.ok ? r.json() : Promise.reject('zip')).then((z) => {
+      const pl = z.places[0], from = `${(+pl.longitude).toFixed(4)},${(+pl.latitude).toFixed(4)}`;
+      const list = spots.filter((sp) => sp.lat && sp.lon);
+      return fetch(`https://router.project-osrm.org/table/v1/driving/${from};${list.map((sp) => `${sp.lon},${sp.lat}`).join(';')}?sources=0&annotations=duration`).then((r) => r.ok ? r.json() : Promise.reject('route')).then((t) => {
+        state.drives = {}; list.forEach((sp, k) => { const sec = t.durations[0][k + 1]; if (sec != null) state.drives[sp.spot] = sec / 60; });
+        state.zip = zip; try { localStorage.setItem('sb-zip', zip); } catch (e) {}
+        msg.textContent = `from ${pl['place name']}, ${pl['state abbreviation']}`; render(); });
+    }).catch((e) => { msg.textContent = e === 'zip' ? 'zip not found' : 'routing unavailable, showing Keene'; state.drives = null; state.zip = null; render(); });
+  }
+
+  function render() { if (!rows.length) return; if (!state.spot || !byId[state.spot]) state.spot = ranked(Math.max(0, todayI))[0].spot; selPanel(); list(); }
 
   let hashHooked = false;
   function load(bust) {
@@ -172,10 +222,11 @@
     $('updated').textContent = bust ? 'Reloading…' : $('updated').textContent;
     return Promise.all(['spots', 'sc', 'sl', 'wind', 'tides', 'model', 'alerts', 'buoys'].map((n) => get(n)).concat([get('sf', true)])).then(([sp, sc, sl, wind, tides, model, alerts, bu, sf]) => {
       spots = sp; byId = {}; spots.forEach((s) => { byId[s.spot] = s; });
+      SBcalc.today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
       rows = SBcalc.fn(sp, sc, sl, wind, tides, model, alerts, sf).filter((r) => byId[r.spot]);
       const prevDate = dates[state.day];
-      dates = [...new Set(sc.map((r) => r.date))].sort().slice(0, 5);
       const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      dates = [...new Set(sc.map((r) => r.date))].sort(); { const keep = dates.filter((d) => d >= today); if (keep.length) dates = keep; } dates = dates.slice(0, 5);
       todayI = dates.indexOf(today) >= 0 ? dates.indexOf(today) : 0;
       state.day = bust && dates.indexOf(prevDate) >= 0 ? dates.indexOf(prevDate) : todayI;
       const cap = sc.map((r) => r.captured_at).filter(Boolean).sort().pop();
@@ -185,6 +236,7 @@
       if (!hashHooked) { hashHooked = true; addEventListener('hashchange', () => { const k = decodeURIComponent(location.hash.slice(1)); if (byId[k] && k !== state.spot) { state.spot = k; state.cam = 0; render(); } }); }
     }).catch((e) => { $('updated').innerHTML = `<span class="err">Couldn’t load ${e}. The morning refresh may be mid-update; try again in a minute.</span>`; });
   }
-  $('refresh').onclick = () => load(true);
-  load(false);
+  $('refresh').onclick = () => { load(true); loadAlerts(); };
+  $('zipform').onsubmit = (e) => { e.preventDefault(); setZip($('zip').value.trim()); };
+  load(false).then(() => { loadAlerts(); let z = null; try { z = localStorage.getItem('sb-zip'); } catch (e) {} if (z) { $('zip').value = z; setZip(z); } });
 })();

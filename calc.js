@@ -26,7 +26,7 @@ const SBcalc = {
     const scBy = {}; scRows.forEach((r) => { const hs = String(r.hours || '6,10,14,18').split(',').map(Number);
       scBy[r.slug + '|' + r.date] = String(r.t || '').split(' ').map((tok, i) => { if (!tok || tok === '?') return null; const [h, c, w, s1, s2] = tok.split('|');
         return { hour: hs[i], raw: h, ft: parseFt(h === 'flat' ? 'flat' : h), lv: LV[c] || null, cond: ({ c: 'clean', f: 'fair', x: 'choppy' })[c] || '', w: parseW(w), s1: parseSw(s1), s2: parseSw(s2) }; }).filter(Boolean); });
-    const dates = [...new Set(scRows.map((r) => r.date))].sort().slice(0, 5);
+    let dates = [...new Set(scRows.map((r) => r.date))].sort(); { const k = dates.filter((d) => !SBcalc.today || d >= SBcalc.today); if (k.length) dates = k; } dates = dates.slice(0, 5);
     const sfBy = {}; (sfRows || []).forEach((r) => { sfBy[r.spot] = r.days || {}; });
     const parseSf = (tok) => { const m = String(tok || '').match(/^([AP])([\d.]+)(?:@(\d+))?([NSEW]*)$/); return m ? { half: m[1], ft: +m[2], s: m[3] ? +m[3] : null, dir: m[4] } : null; };
     const slBy = {}; slRows.forEach((r) => { slBy[r.spot] = String(r.days || '').split(','); });
@@ -115,6 +115,11 @@ const SBcalc = {
           [p + 'sl']: sl ? (/flat/i.test(slRaw) ? 'flat' : slRaw.replace(/ft$/, '') + ' ft') : 'n/a',
           [p + 'sf']: sfDay.length ? sfDay.map((x) => `${x.half === 'A' ? 'am' : 'pm'} ${x.ft}${x.s ? '@' + x.s + 's' : ''}`).join(' / ') + ' ft' : 'n/a',
           [p + 'date']: date,
+          [p + 'sc_win']: (() => { const N = slots.length ? slots.reduce((q, x) => Math.abs(x.hour - h0.h) < Math.abs(q.hour - h0.h) ? x : q) : null; return N && N.raw ? `${N.raw === 'flat' ? 'flat' : N.raw + 'f'}${N.s1 ? ' @' + N.s1.s + 's' : ''}` : ''; })(),
+          [p + 'sl_win']: sl ? (/flat/i.test(slRaw) ? 'flat' : slRaw.replace(/\s*ft$/, '') + 'f') : '',
+          [p + 'sf_win']: (() => { const x = sfAt(h0.h); return x ? `${x.ft}f${x.s ? ' @' + x.s + 's' : ''}` : ''; })(),
+          [p + 'sw1']: (() => { const N = slots.length ? slots.reduce((q, x) => Math.abs(x.hour - h0.h) < Math.abs(q.hour - h0.h) ? x : q) : null; return N && N.s1 ? `${N.s1.ft} ft @ ${N.s1.s}s ${N.s1.dir}` : ''; })(),
+          [p + 'sw2']: (() => { const N = slots.length ? slots.reduce((q, x) => Math.abs(x.hour - h0.h) < Math.abs(q.hour - h0.h) ? x : q) : null; return N && N.s2 ? `${N.s2.ft} ft @ ${N.s2.s}s ${N.s2.dir}` : ''; })(),
           [p + 'split_ft']: Math.round(split * 2) / 2, [p + 'pills']: pills, [p + 'hours']: hours });
       });
       return row;

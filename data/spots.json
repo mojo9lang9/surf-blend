@@ -13,7 +13,7 @@
   "shelter_note": "",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid best; Jenness holds higher tide",
   "sc_page": "https://surfcaptain.com/forecast/rye-new-hampshire",
   "sc_source": "own page",
@@ -53,6 +53,11 @@
     "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
     "km": 32
    }
+  ],
+  "nws_zones": [
+   "NHZ014",
+   "NHC015",
+   "ANZ154"
   ]
  },
  {
@@ -69,7 +74,7 @@
   "shelter_note": "scored on whichever side is cleaner \u2014 south side (point blocks N\u2013NE) or north side (offshore SW). You haven't surfed it yet; it needs the right swell direction, which this score can't see.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/rye-new-hampshire",
   "sc_source": "Rye page (same stretch)",
@@ -109,6 +114,11 @@
     "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
     "km": 32
    }
+  ],
+  "nws_zones": [
+   "NHZ014",
+   "NHC015",
+   "ANZ154"
   ]
  },
  {
@@ -125,7 +135,7 @@
   "shelter_note": "",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/rye-new-hampshire",
   "sc_source": "Rye page (same stretch)",
@@ -165,6 +175,11 @@
     "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
     "km": 33
    }
+  ],
+  "nws_zones": [
+   "NHZ014",
+   "NHC015",
+   "ANZ154"
   ]
  },
  {
@@ -181,7 +196,7 @@
   "shelter_note": "",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/rye-new-hampshire",
   "sc_source": "Rye page (same stretch)",
@@ -221,6 +236,11 @@
     "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
     "km": 36
    }
+  ],
+  "nws_zones": [
+   "NHZ014",
+   "NHC015",
+   "ANZ154"
   ]
  },
  {
@@ -237,7 +257,7 @@
   "shelter_note": "Great Boar's Head at the south end blocks S wind.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/hampton-new-hampshire",
   "sc_source": "own page (Hampton)",
@@ -277,6 +297,11 @@
     "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
     "km": 41
    }
+  ],
+  "nws_zones": [
+   "NHZ014",
+   "NHC015",
+   "ANZ154"
   ]
  },
  {
@@ -293,7 +318,7 @@
   "shelter_note": "Nubble / Cape Neddick at the north end blocks N wind (surf-forecast.com agrees).",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/york-county-maine",
   "sc_source": "own page",
@@ -333,6 +358,72 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 22
    }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
+  ]
+ },
+ {
+  "spot": "short-sands",
+  "name": "Short Sands",
+  "state": "ME",
+  "band": "Near",
+  "drive": "2h00",
+  "wind_zone": "york",
+  "offshore_deg": 260,
+  "alt_offshore_deg": null,
+  "alt_label": "",
+  "shelter_from": "",
+  "shelter_note": "",
+  "w_sc": 0.65,
+  "w_sl": 0.35,
+  "local_factor": 1,
+  "tide": "Mid",
+  "sc_page": "https://surfcaptain.com/forecast/york-county-maine",
+  "sc_source": "Long Sands page (next door)",
+  "sl_page": "",
+  "sf_page": "",
+  "break_type": "Beach",
+  "sf_best_wind": "NW",
+  "sf_swell": "SE",
+  "pick": true,
+  "tide_station": "wells",
+  "tide_pref": "mid",
+  "cam_url": "https://liquiddreamssurf.com/long-sands-surf-cam-report",
+  "cam_label": "Long Sands cam (Liquid Dreams)",
+  "cam_embed": "https://embed.cdn-surfline.com/cams/58349bf83421b20545c4b552/9dc9d328cfb3ab68ceb5385642adaa6cb6d58c77",
+  "buoy": "44098",
+  "windy_url": "https://www.windy.com/?waves,43.17,-70.58,10",
+  "lat": 43.172,
+  "lon": -70.606,
+  "sc_slug": "york-county-maine",
+  "off_tide": "",
+  "off_note": "",
+  "guide": "York Beach cove just north of the Nubble, facing east-northeast. Uses the Long Sands (York) Surf Captain read. Offshore set to WSW; shelter and tide rules not set yet, so tell me what you know.",
+  "sf_slug": "",
+  "cams": [
+   {
+    "name": "Seaside Inn, Kennebunk Beach, Maine US - LIVE",
+    "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
+    "km": 2
+   },
+   {
+    "name": "Marginal Way Ogunquit Maine Live View",
+    "url": "https://www.youtube.com/embed/RLIRtD89O7g?autoplay=1&mute=1",
+    "km": 10
+   },
+   {
+    "name": "Wood Island Life Saving Station Tower",
+    "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
+    "km": 22
+   }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
   ]
  },
  {
@@ -349,7 +440,7 @@
   "shelter_note": "Marginal Way / Israel's Head headland at the south end blocks S wind.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/ogunquit-maine",
   "sc_source": "own page",
@@ -389,6 +480,11 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 33
    }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
   ]
  },
  {
@@ -405,7 +501,7 @@
   "shelter_note": "Surfline listing is the river-mouth point and runs low.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/plum-island-massachusetts",
   "sc_source": "own page",
@@ -445,6 +541,11 @@
     "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
     "km": 45
    }
+  ],
+  "nws_zones": [
+   "MAZ007",
+   "MAC009",
+   "ANZ154"
   ]
  },
  {
@@ -461,7 +562,7 @@
   "shelter_note": "",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/seabrook-new-hampshire",
   "sc_source": "Seabrook page (next door)",
@@ -501,6 +602,11 @@
     "url": "https://www.youtube.com/embed/KziwCV7db9s?autoplay=1&mute=1",
     "km": 47
    }
+  ],
+  "nws_zones": [
+   "MAZ007",
+   "MAC009",
+   "ANZ154"
   ]
  },
  {
@@ -517,7 +623,7 @@
   "shelter_note": "Nahant peninsula at the south end blocks S wind (surf-forecast.com notes S shelter).",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/nahant-massachusetts",
   "sc_source": "own page",
@@ -547,6 +653,12 @@
     "url": "https://www.youtube.com/embed/KziwCV7db9s?autoplay=1&mute=1",
     "km": 0
    }
+  ],
+  "nws_zones": [
+   "MAZ015",
+   "MAC025",
+   "ANZ230",
+   "ANZ251"
   ]
  },
  {
@@ -563,7 +675,7 @@
   "shelter_note": "Reef; surf-forecast.com says offshore is N. Shelter unset.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/nahant-massachusetts",
   "sc_source": "Nahant page (next door)",
@@ -598,6 +710,12 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 48
    }
+  ],
+  "nws_zones": [
+   "MAZ015",
+   "MAC025",
+   "ANZ230",
+   "ANZ251"
   ]
  },
  {
@@ -614,7 +732,7 @@
   "shelter_note": "",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/wells-beach-maine",
   "sc_source": "own page",
@@ -654,6 +772,11 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 39
    }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
   ]
  },
  {
@@ -670,7 +793,7 @@
   "shelter_note": "Lords Point / Great Hill to the east blocks E wind.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/york-county-south-maine",
   "sc_source": "own page",
@@ -710,6 +833,11 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 44
    }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
   ]
  },
  {
@@ -726,7 +854,7 @@
   "shelter_note": "surf-forecast.com calls Good Harbor sheltered but names no direction.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/gloucester-massachusetts",
   "sc_source": "own page",
@@ -761,6 +889,11 @@
     "url": "https://www.youtube.com/embed/XPFYJtkl-oE?autoplay=1&mute=1",
     "km": 42
    }
+  ],
+  "nws_zones": [
+   "MAZ007",
+   "MAC009",
+   "ANZ251"
   ]
  },
  {
@@ -777,7 +910,7 @@
   "shelter_note": "Biddeford Pool / Fletcher Neck to the NE blocks NE wind.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/york-county-south-maine",
   "sc_source": "Gooch's page (nearest)",
@@ -812,6 +945,11 @@
     "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
     "km": 35
    }
+  ],
+  "nws_zones": [
+   "MEZ023",
+   "MEC031",
+   "ANZ154"
   ]
  },
  {
@@ -828,7 +966,7 @@
   "shelter_note": "",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/nantasket-massachusetts",
   "sc_source": "own page",
@@ -858,6 +996,11 @@
     "url": "https://www.youtube.com/embed/KziwCV7db9s?autoplay=1&mute=1",
     "km": 12
    }
+  ],
+  "nws_zones": [
+   "MAZ019",
+   "MAC023",
+   "ANZ251"
   ]
  },
  {
@@ -874,7 +1017,7 @@
   "shelter_note": "",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/higgins-beach-maine",
   "sc_source": "Higgins page (nearest)",
@@ -909,6 +1052,11 @@
     "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
     "km": 44
    }
+  ],
+  "nws_zones": [
+   "MEZ024",
+   "MEC005",
+   "ANZ154"
   ]
  },
  {
@@ -925,7 +1073,7 @@
   "shelter_note": "Prouts Neck to the NE/E blocks E\u2013NE wind.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/higgins-beach-maine",
   "sc_source": "Higgins page (nearest)",
@@ -960,6 +1108,11 @@
     "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
     "km": 46
    }
+  ],
+  "nws_zones": [
+   "MEZ024",
+   "MEC005",
+   "ANZ154"
   ]
  },
  {
@@ -976,7 +1129,7 @@
   "shelter_note": "Surf Captain says SW offshore; surf-forecast.com says W.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/egypt-beach-massachusetts",
   "sc_source": "own page",
@@ -1006,6 +1159,11 @@
     "url": "https://www.youtube.com/embed/KziwCV7db9s?autoplay=1&mute=1",
     "km": 28
    }
+  ],
+  "nws_zones": [
+   "MAZ019",
+   "MAC023",
+   "ANZ251"
   ]
  },
  {
@@ -1022,7 +1180,7 @@
   "shelter_note": "Prouts Neck blocks N\u2013NE wind (surf-forecast.com also notes N shelter).",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/higgins-beach-maine",
   "sc_source": "own page",
@@ -1057,6 +1215,11 @@
     "url": "https://www.youtube.com/embed/MnBqd6bB4Jw?autoplay=1&mute=1",
     "km": 50
    }
+  ],
+  "nws_zones": [
+   "MEZ024",
+   "MEC005",
+   "ANZ154"
   ]
  },
  {
@@ -1073,7 +1236,7 @@
   "shelter_note": "Two faces: the Lighthouse works in W\u2013WNW wind; the Southside (west of the point) is offshore in NE. Scored on whichever side is cleaner.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/point-judith-rhode-island",
   "sc_source": "own page",
@@ -1097,7 +1260,12 @@
   "off_note": "",
   "guide": "Lighthouse in Rhode Island is an exposed reef and point break that has pretty consitent surf and can work at any time of the year. Offshore winds are from the west northwest with some shelter here from northeast winds. Waves just as likely from local windswells as from distant groundswells and the best swell direction is from the south southeast. There are left and right breaking reefs Best around mid tide when the tide is rising. Sometimes crowded. Beware of rocks and rips.",
   "sf_slug": "Point-Judithlighthouse",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "salty-brine",
@@ -1111,9 +1279,9 @@
   "alt_label": "",
   "shelter_from": "",
   "shelter_note": "Inside the Galilee breakwater; Surfline shows it flat almost always. No Surfline page id found; kept for completeness.",
-  "w_sc": 0.0,
-  "w_sl": 1.0,
-  "local_factor": 1.0,
+  "w_sc": 0,
+  "w_sl": 1,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "",
   "sc_source": "none",
@@ -1137,7 +1305,12 @@
   "off_note": "",
   "guide": "",
   "sf_slug": "",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "scarborough",
@@ -1153,7 +1326,7 @@
   "shelter_note": "surf-forecast.com notes some NE shelter.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/narragansett-rhode-island",
   "sc_source": "Narragansett page (nearest)",
@@ -1177,7 +1350,12 @@
   "off_note": "",
   "guide": "Scarborough State Beach in Rhode Island is a reasonably exposed beach break that only works once in a while with no particular seasonal pattern. The best wind direction is from the west with some shelter here from northeast winds. Tends to receive a mix of groundswells and windswells and the best swell direction is from the south southeast. Waves at the beach break both left and right. Best around low tide. Unlikely to be too crowded, even when the surf is up. Watch out for rocks.",
   "sf_slug": "Scarborough-State-Beach_Rhode-Island",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "narragansett",
@@ -1193,7 +1371,7 @@
   "shelter_note": "Point Judith / Bonnet Point block SW wind.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/narragansett-rhode-island",
   "sc_source": "own page",
@@ -1217,7 +1395,12 @@
   "off_note": "",
   "guide": "Narragansett Town Beach in Rhode Island is a sheltered beach break that has pretty consitent surf and can work at any time of the year. Offshore winds blow from the northwest. Tends to receive a mix of groundswells and windswells and the ideal swell angle is from the southeast. It's sometimes crowded here.",
   "sf_slug": "Narragansett-Town-Beach",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "matunuck",
@@ -1233,7 +1416,7 @@
   "shelter_note": "The reefs (Trestles side) hold up in NE wind per surf-forecast.com.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/matunuck-rhode-island",
   "sc_source": "own page",
@@ -1257,7 +1440,12 @@
   "off_note": "",
   "guide": "Matunuck in Rhode Island is a sheltered reef break that is often working and works all around the year. Offshore winds are from the north northwest. Groundswells and windswells are equally likely and the ideal swell angle is from the southeast. When it's working here, it can get crowded. Hazards include - Rips / undertow - Rocks.",
   "sf_slug": "Matunuck",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "k38",
@@ -1273,7 +1461,7 @@
   "shelter_note": "Same reef stretch as Matunuck; surf-forecast.com notes NE shelter.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/matunuck-rhode-island",
   "sc_source": "Matunuck page (same stretch)",
@@ -1297,7 +1485,12 @@
   "off_note": "",
   "guide": "K38and39 in Rhode Island is a fairly exposed reef break that has reasonably consistent surf and can work at any time of the year. Offshore winds are from the northeast with some shelter here from northeast winds. Windswells and groundswells in equal measure and the ideal swell angle is from the south southeast. Primarily a left hand reef break, although a right is also possible.. Best around low tide. Unlikely to be too crowded, even when the surf is up. Beware of rocks, rips,jetskis.",
   "sf_slug": "K-Thirty-Eight-and-Thirty-nine",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "green-hill",
@@ -1313,7 +1506,7 @@
   "shelter_note": "surf-forecast.com: partly sheltered from NE.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/matunuck-rhode-island",
   "sc_source": "Matunuck page (nearest)",
@@ -1337,7 +1530,12 @@
   "off_note": "",
   "guide": "Greenhill in Rhode Island is a fairly exposed beach break that has reliable surf and can work at any time of the year. Offshore winds blow from the north northeast with some shelter here from northeast winds. Tends to receive a mix of groundswells and windswells and the ideal swell direction is from the south southeast. Waves at the beach are both lefts and rights and there is also a left hand point break. Best around low tide. Unlikely to be too crowded, even when the surf is up. Beware of rocks and rips.",
   "sf_slug": "Greenhill",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ006",
+   "RIC009",
+   "ANZ237"
+  ]
  },
  {
   "spot": "ruggles",
@@ -1353,7 +1551,7 @@
   "shelter_note": "Exposed per surf-forecast.com; SC offshore W, SF says NW.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/ruggles-rhode-island",
   "sc_source": "own page",
@@ -1377,7 +1575,13 @@
   "off_note": "",
   "guide": "Ruggles in Rhode Island is a reasonably exposed reef and point break that has quite consistent surf and can work at any time of the year. Offshore winds blow from the northwest. Waves just as likely from local windswells as from distant groundswells and the ideal swell angle is from the southeast. Both left and right reef breaks and there is a left hand point break as well. Best around low tide. It's sometimes crowded here. Take care of the strong rips here.",
   "sf_slug": "Ruggles",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ008",
+   "RIC005",
+   "ANZ236",
+   "ANZ235"
+  ]
  },
  {
   "spot": "second-beach",
@@ -1393,7 +1597,7 @@
   "shelter_note": "Sachuest Point to the east blocks E\u2013SE wind.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/second-beach-rhode-island",
   "sc_source": "own page",
@@ -1417,7 +1621,13 @@
   "off_note": "",
   "guide": "2nd Beach in Rhode Island is a reasonably exposed beach break that has very consistent surf and works all around the year. The best wind direction is from the north northeast. Windswells and groundswells in equal measure and the best swell direction is from the southeast. Sometimes crowded. Beware of - Rips / undertow - Localism.",
   "sf_slug": "Second-Beach-1",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ008",
+   "RIC005",
+   "ANZ236",
+   "ANZ235"
+  ]
  },
  {
   "spot": "first-beach",
@@ -1433,7 +1643,7 @@
   "shelter_note": "Exposed per surf-forecast.com.",
   "w_sc": 0.65,
   "w_sl": 0.35,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/first-beach-rhode-island",
   "sc_source": "own page",
@@ -1457,7 +1667,13 @@
   "off_note": "",
   "guide": "Eastons Beach(1st Beach) in Rhode Island is a quite exposed beach break that has quite consistent surf and can work at any time of the year. Ideal winds are from the north. Groundswells and windswells are equally likely and the best swell direction is from the southeast. The beach breaks offer lefts and rights. Best around mid tide when the tide is rising. Unlikely to be too crowded, even when the surf is up. Surfing here means negotiating dangerous rips.",
   "sf_slug": "Eastons-Beach",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ008",
+   "RIC005",
+   "ANZ236",
+   "ANZ235"
+  ]
  },
  {
   "spot": "south-shore",
@@ -1473,7 +1689,7 @@
   "shelter_note": "Sakonnet Point to the west blocks SW\u2013W wind.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/second-beach-rhode-island",
   "sc_source": "Second Beach page (nearest)",
@@ -1497,7 +1713,13 @@
   "off_note": "",
   "guide": "Goosewing Beach in Rhode Island is a fairly exposed beach reef and point break that has reliable surf and can work at any time of the year. Ideal winds are from the north. Most of the surf here comes from groundswells and the best swell direction is from the southeast. The beach break offers both left and right hand waves as well as left and right hand reef breaks.. The quality of the surf isn't affected by the tide. Even when there are waves, it's not likley to be crowded. Surfing here means negotiating dangerous rips.",
   "sf_slug": "Goosewing-Beach",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "RIZ008",
+   "RIC005",
+   "ANZ236",
+   "ANZ235"
+  ]
  },
  {
   "spot": "deal",
@@ -1513,7 +1735,7 @@
   "shelter_note": "Kept for reference only; never ranked as a pick.",
   "w_sc": 0.5,
   "w_sl": 0.5,
-  "local_factor": 1.0,
+  "local_factor": 1,
   "tide": "Mid",
   "sc_page": "https://surfcaptain.com/forecast/long-branch-new-jersey",
   "sc_source": "Long Branch page (next door)",
@@ -1537,6 +1759,11 @@
   "off_note": "",
   "guide": "",
   "sf_slug": "",
-  "cams": []
+  "cams": [],
+  "nws_zones": [
+   "NJZ014",
+   "NJC025",
+   "ANZ450"
+  ]
  }
 ]

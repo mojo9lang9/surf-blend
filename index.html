@@ -90,6 +90,21 @@ a { color: inherit; }
 .tday { min-width: 0; }
 .tile .rdays { display: flex; justify-content: space-between; gap: 4px; margin-top: 0; }
 .tile .rday { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: var(--muted); }
+.zipform { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; flex-wrap: wrap; }
+.zipform label { color: var(--muted); }
+.zipform input { width: 64px; font: inherit; font-size: 12px; padding: 4px 8px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+#zipmsg { color: var(--muted); font-size: 12px; }
+.alerts { display: flex; flex-direction: column; gap: 6px; }
+.alert-row { display: block; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, var(--q3) 14%, var(--card)); text-decoration: none; font-size: 13px; }
+.alert-row b { color: var(--q3); font-weight: 600; }
+.alert-chip { display: inline-block; margin-top: 6px; margin-right: 6px; font-size: 12px; color: var(--q3); text-decoration: none; font-weight: 500; }
+.alert-badge { font-size: 11px; color: var(--q3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.swell { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; font-size: 13px; margin-top: 4px; }
+.verdict a { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--muted); }
+.tile .ringcol.big { align-self: center; width: 150px; }
+.tile .ringcol.big .pills .pill { max-width: 46px; }
+.tmeta { margin-top: -6px; }
+.srcline span { white-space: nowrap; }
 /* list */
 .list-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
 .row { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 8px; border-top: 1px solid var(--line); cursor: pointer; border-radius: 10px; }
@@ -115,19 +130,21 @@ a { color: inherit; }
   <header class="top">
     <div>
       <h1>New England Surf Dashboard</h1>
-      <div class="sub"><span id="updated">Loading the morning read…</span> <button class="chip" id="refresh" type="button" style="margin-left:8px">↻ Refresh</button></div>
+      <div class="sub"><span id="updated">Loading the morning read…</span> <button class="chip" id="refresh" type="button" style="margin-left:8px">↻ Refresh</button>
+        <form id="zipform" class="zipform"><label for="zip">Drive from</label><input id="zip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="zip" autocomplete="postal-code"><button class="chip" type="submit">Go</button><span id="zipmsg">from Keene</span></form></div>
     </div>
     <div class="legend" aria-label="Color key">
       <span><span class="sw" style="background:var(--q7)"></span>clean</span>
       <span><span class="sw" style="background:var(--q5)"></span>fair</span>
       <span><span class="sw" style="background:var(--q3)"></span>choppy</span>
-      <span><span class="sw" style="background:var(--q0)"></span>flat or off</span>
+      <span><span class="sw" style="background:var(--q0)"></span>flat</span>
       <span><span class="sw" style="background:var(--dk)"></span>dark</span>
       <span><b style="color:var(--rain)">blue ft</b> heavy rain</span>
       <span><b style="color:var(--smoke)">cream ft</b> smoke</span>
     </div>
   </header>
 
+  <section class="alerts" id="alerts" hidden aria-label="Weather alerts"></section>
   <section class="buoys" id="buoys" aria-label="Buoys"></section>
 
   <section class="main">
@@ -142,7 +159,7 @@ a { color: inherit; }
 
   <p class="foot">Feet blend Surf Captain 50 / Surfline 25 / surf-forecast 25. Color is Surf Captain's clean / fair / choppy, stepped up where a headland or second face shelters the wind. Ranked by size × conditions, then drive. Triangles point the way wind and swell travel; wind shows above 5 mph.</p>
 </div>
-<script src="calc.js?v=20261119b"></script>
-<script src="app.js?v=20261119b"></script>
+<script src="calc.js?v=20261120a"></script>
+<script src="app.js?v=20261120a"></script>
 </body>
 </html>
