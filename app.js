@@ -159,5 +159,6 @@
     $('updated').textContent = cap ? `Updated ${new Date(cap).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })} ET` + (dates.indexOf(today) < 0 ? ' · today’s refresh hasn’t run yet' : '') : '';
     const h = decodeURIComponent(location.hash.slice(1)); if (byId[h]) state.spot = h;
     buoys(bu); render();
+    addEventListener('hashchange', () => { const k = decodeURIComponent(location.hash.slice(1)); if (byId[k] && k !== state.spot) { state.spot = k; state.cam = 0; render(); } });
   }).catch((e) => { $('updated').innerHTML = `<span class="err">Couldn’t load ${e}. The morning refresh may be mid-update; reload in a minute.</span>`; });
 })();
