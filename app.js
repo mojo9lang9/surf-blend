@@ -11,7 +11,7 @@
   const color = (s) => s == null ? 'var(--track)' : s >= 3 ? 'var(--q7)' : s >= 2 ? 'var(--q5)' : s >= 1 ? 'var(--q3)' : 'var(--q0)';
   const cellColor = (x) => x.st === 'dark' ? 'var(--dk)' : x.st !== 'ok' ? 'var(--q0)' : color(x.score);
   const mins = (d) => { const m = String(d || '').match(/(\d+)h(\d+)?/); return m ? +m[1] * 60 + +(m[2] || 0) : 999; };
-  const dayLbl = (date, i, todayI) => i === todayI ? 'Today' : i === todayI + 1 ? 'Tmrw' : new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+  const dayLbl = (date) => new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' });
   const km = (a, b) => { const r = Math.PI / 180, x = (b.lon - a.lon) * r * Math.cos((a.lat + b.lat) * r / 2), y = (b.lat - a.lat) * r; return Math.sqrt(x * x + y * y) * 6371; };
 
   const state = { day: 0, spot: null, cam: 0 };
@@ -26,9 +26,9 @@
     svg.append(sv('circle', { r: R, fill: 'none', stroke: has ? (st === 'off' ? 'var(--q0)' : color(sc)) : 'var(--track)', 'stroke-width': 9 }));
     const ftc = r[p + 'rain'] ? 'var(--rain)' : r[p + 'smoke'] ? 'var(--smoke)' : 'currentColor';
     const ft = has ? r[p + 'ft'] : '–';
-    const t = sv('text', { y: size >= 80 ? -2 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': size >= 80 ? (String(ft).length > 3 ? 22 : 28) : (String(ft).length > 3 ? 24 : 30), 'font-weight': 600, fill: ftc, 'font-family': '-apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, sans-serif' });
+    const t = sv('text', { y: size >= 70 ? -2 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': size >= 70 ? (String(ft).length > 3 ? 22 : 28) : (String(ft).length > 3 ? 24 : 30), 'font-weight': 600, fill: ftc, 'font-family': '-apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, sans-serif' });
     t.textContent = ft === 'flat' ? 'flat' : ft + (has ? 'f' : ''); svg.append(t);
-    if (has && r[p + 'per'] && size >= 80) {
+    if (has && r[p + 'per'] && size >= 70) {
       const s = sv('text', { x: -4, y: 22, 'text-anchor': 'middle', 'font-size': 12, fill: 'currentColor', opacity: .75 }); s.textContent = `@${r[p + 'per']}s${r[p + 'combo'] ? '*' : ''}`; svg.append(s);
       if (r[p + 'sdeg'] != null) { const g = sv('g', { transform: `translate(${r[p + 'combo'] ? 24 : 20},18)` }); tri(g, r[p + 'sdeg'], '#fff', 'rgba(0,0,0,.65)', 1.2); svg.append(g); }
     }
@@ -78,10 +78,12 @@
 
   function hourStrip(r, i) {
     const hours = r[`d${i}_hours`] || [], g = el('div', { class: 'strip' });
-    const hr = (h) => h === 12 ? '12p' : h > 12 ? `${h - 12}p` : `${h}a`;
+    const hr = (h) => h > 12 ? `${h - 12}` : `${h}`;
     g.append(el('div', { class: 'rh', text: '' })); hours.forEach((x) => g.append(el('div', { class: 'c', style: 'color:var(--muted)', text: hr(x.h) })));
     g.append(el('div', { class: 'rh', text: 'Surf ft' }));
     hours.forEach((x) => { const c = el('div', { class: 'c cell', style: `background:${cellColor(x)}${x.rain ? ';color:#cfe9ff' : x.smoke ? ';color:#f3e3b0' : ''}`, title: `${x.ft} ft · ${x.word}${x.why ? ' · ' + x.why : ''}`, text: x.ft === 'flat' ? '–' : x.ft }); g.append(c); });
+    g.append(el('div', { class: 'rh', text: 'Period' }));
+    hours.forEach((x) => g.append(el('div', { class: 'c', style: 'color:var(--muted)', title: x.swtxt || '', text: x.per ? `${x.per}s${x.combo ? '*' : ''}` : '' })));
     g.append(el('div', { class: 'rh', text: 'Wind' }));
     hours.forEach((x) => { const c = el('div', { class: 'c', title: `${x.dir} ${x.mph} mph (${x.wsrc})` });
       if (x.mph != null && x.mph > 5 && toDeg(x.dir) != null) { const s = sv('svg', { viewBox: '-7 -7 14 14', width: 12, height: 12 }); const gg = sv('g'); tri(gg, toDeg(x.dir), 'var(--fg)', 'none', 0); s.append(gg); c.append(s, document.createTextNode(' ' + x.mph)); }
@@ -121,7 +123,7 @@
   function selPanel() {
     const r = rows.find((x) => x.spot === state.spot) || rows[0], s = byId[r.spot], i = state.day, p = `d${i}_`, box = $('sel');
     box.textContent = '';
-    const days = el('div', { class: 'days', role: 'group', 'aria-label': 'Day for this break' }, dates.map((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === i), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; return b; }));
+    const days = el('div', { class: 'days', role: 'group', 'aria-label': 'Day for this break' }, dates.map((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === i), text: dayLbl(d) }); b.onclick = () => { state.day = k; render(); }; return b; }));
     const has = r[p + 'score'] != null;
     const verdict = el('div', { class: 'verdict' });
     if (!has) verdict.textContent = 'No forecast for this day.';
@@ -147,6 +149,9 @@
     if (s.shelter_note) d.append(el('b', { text: s.shelter_note + ' ' }));
     d.append(document.createTextNode(s.guide || ''));
     box.append(d);
+    const note = (state.slNotes || []).find((n) => n.region === s.sl_region);
+    if (note) box.append(el('div', { class: 'slnote' }, [el('div', { class: 'lbl', text: `Surfline ${note.region} forecast${s.sl_region_borrowed ? ' (nearest region)' : ''} · ${new Date(note.captured_at).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' })}` }),
+      el('div', { class: 'slhead', text: note.headline }), ...String(note.body || '').split('\n').map((t) => el('div', { class: 'sub', text: t }))]));
     const L = [['Surf Captain', s.sc_page], ['Surfline', s.sl_page], ['surf-forecast', s.sf_page]].filter((x) => x[1]);
     box.append(el('div', { class: 'links' }, L.map(([t, u]) => el('a', { href: u, target: '_blank', rel: 'noopener', text: t + ' ↗' }))));
     if (camShown !== s.spot) { camShown = s.spot; camPanel(s); }
@@ -162,18 +167,17 @@
 
   function list() {
     const box = $('list'), dbox = $('days'); box.textContent = ''; dbox.textContent = '';
-    dates.forEach((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === state.day), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; dbox.append(b); });
+    dates.forEach((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === state.day), text: dayLbl(d) }); b.onclick = () => { state.day = k; render(); }; dbox.append(b); });
     ranked().forEach((r) => {
       const s = byId[r.spot], p = `d${state.day}_`;
-      const meta = r[p + 'score'] == null ? 'no data' : r[p + 'st'] === 'off' ? (r[p + 'why'] === 'flat' || !r[p + 'why'] ? 'flat' : 'off · ' + r[p + 'why']) : 'best ' + r[p + 'window'];
-      const others = dates.map((d, k) => k).filter((k) => k !== state.day);
+            const others = dates.map((d, k) => k).filter((k) => k !== state.day);
       const al = alertsFor(s);
       const b = el('button', { class: 'tile' + (r.pick ? '' : ' ref'), 'aria-current': String(r.spot === state.spot) }, [
-        el('div', { class: 'r1' }, [el('span', { class: 'rname', text: s.name }), el('span', { class: 'rmeta', text: `${s.state} · ${fmtDrive(driveMin(s))}` })]),
-        el('div', { class: 'rmeta tmeta', text: meta }),
+        el('div', { class: 'tname', text: s.name }),
+        el('div', { class: 'rmeta tmeta', text: [s.state, fmtDrive(driveMin(s)), r[p + 'st'] === 'ok' ? r[p + 'window'] : r[p + 'st'] === 'off' && r[p + 'why'] && r[p + 'why'] !== 'flat' ? 'off at ' + r[p + 'why'].replace('off within 1h of ', '') : ''].filter(Boolean).join(' · ') }),
         al.length ? el('div', { class: 'alert-badge', title: al.map((a) => a.event).join(', '), text: '⚠ ' + al[0].event + (al.length > 1 ? ` +${al.length - 1}` : '') }) : null,
-        el('div', { class: 'ringcol big' }, [ring(r, state.day, 96), r[p + 'score'] != null ? pills(r, state.day) : el('div', { class: 'pills' })]),
-        el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 42), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k], k, todayI) })])))]);
+        el('div', { class: 'ringcol big' }, [ring(r, state.day, 77), r[p + 'score'] != null ? pills(r, state.day) : el('div', { class: 'pills' })]),
+        el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 42), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k]) })])))]);
       b.onclick = () => { state.spot = r.spot; state.cam = 0; try { history.replaceState(null, '', '#' + r.spot); } catch (e) {} render(); $('sel').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
       box.append(b);
     });
@@ -220,7 +224,8 @@
     const v = bust ? Date.now() : Date.now() / 6e5 | 0;
     const get = (n, opt) => fetch(`data/${n}.json?v=${v}`, bust ? { cache: 'no-store' } : {}).then((r) => r.ok ? r.json() : opt ? [] : Promise.reject(n)).catch((e) => { if (opt) return []; throw e; });
     $('updated').textContent = bust ? 'Reloading…' : $('updated').textContent;
-    return Promise.all(['spots', 'sc', 'sl', 'wind', 'tides', 'model', 'alerts', 'buoys'].map((n) => get(n)).concat([get('sf', true)])).then(([sp, sc, sl, wind, tides, model, alerts, bu, sf]) => {
+    return Promise.all(['spots', 'sc', 'sl', 'wind', 'tides', 'model', 'alerts', 'buoys'].map((n) => get(n)).concat([get('sf', true), get('sl_notes', true)])).then(([sp, sc, sl, wind, tides, model, alerts, bu, sf, sln]) => {
+      state.slNotes = sln;
       spots = sp; byId = {}; spots.forEach((s) => { byId[s.spot] = s; });
       SBcalc.today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
       rows = SBcalc.fn(sp, sc, sl, wind, tides, model, alerts, sf).filter((r) => byId[r.spot]);

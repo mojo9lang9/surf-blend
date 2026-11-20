@@ -7,7 +7,7 @@ const SBcalc = {
     const POINTS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
     const toDeg = (d) => { const i = POINTS.indexOf(String(d || '').toUpperCase()); return i < 0 ? null : i * 22.5; };
     const toPt = (deg) => POINTS[Math.round(((+deg % 360) + 360) % 360 / 22.5) % 16];
-    const hr = (h) => h === 12 ? '12p' : h > 12 ? `${h - 12}p` : `${h}a`;
+    const hr = (h) => h > 12 ? `${h - 12}` : `${h}`;
     const parseFt = (s) => { s = String(s || '').toLowerCase(); if (!s) return null; if (s.includes('flat')) return [0, 0];
       const m = s.match(/(\d+(?:\.\d+)?)(?:\s*-\s*(\d+(?:\.\d+)?))?\s*(\+)?/); if (!m) return null;
       const lo = +m[1]; let hi = m[2] ? +m[2] : lo; if (m[3]) hi += 0.5; return [lo, hi]; };
@@ -29,7 +29,8 @@ const SBcalc = {
     let dates = [...new Set(scRows.map((r) => r.date))].sort(); { const k = dates.filter((d) => !SBcalc.today || d >= SBcalc.today); if (k.length) dates = k; } dates = dates.slice(0, 5);
     const sfBy = {}; (sfRows || []).forEach((r) => { sfBy[r.spot] = r.days || {}; });
     const parseSf = (tok) => { const m = String(tok || '').match(/^([AP])([\d.]+)(?:@(\d+))?([NSEW]*)$/); return m ? { half: m[1], ft: +m[2], s: m[3] ? +m[3] : null, dir: m[4] } : null; };
-    const slBy = {}; slRows.forEach((r) => { slBy[r.spot] = String(r.days || '').split(','); });
+    const slBy = {}, slStart = {}; slRows.forEach((r) => { slBy[r.spot] = String(r.days || '').split(','); slStart[r.spot] = r.captured_at ? new Date(r.captured_at).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }) : null; });
+    const slIdx = (spot, date, i) => slStart[spot] ? Math.round((Date.parse(date) - Date.parse(slStart[spot])) / 864e5) : i;
     const noaaBy = {}; noaa.forEach((r) => { noaaBy[r.zone + '|' + r.date] = { note: r.note || '', t: String(r.w || '').split(' ').map((x) => { const m = x.match(/^([NSEW]{1,3}|-)(\d+)([RXS]?)$/); return m ? { dir: m[1] === '-' ? '' : m[1], mph: +m[2], wx: m[3] } : null; }) }; });
     const modBy = {}; model.forEach((r) => { const hs = String(r.hours).split(',').map(Number); modBy[r.zone + '|' + r.date] = String(r.t).split(' ').map((x, i) => { const a = x.split(',').map(Number); return { hour: hs[i], swell_ft: a[0], swell_s: a[1], swell_deg: a[2], wave_ft: a[3], wind_deg: a[4], wind_mph: a[5], aqi: a[6] }; }); });
     const ev = {}; tides.forEach((r) => { ev[r.station] = String(r.ev).split(' ').map((x) => { const m = x.match(/^(\S{16})([HL])(-?[\d.]+)$/); return m ? { ms: Date.parse(m[1] + ':00Z'), type: m[2], ft: +m[3] } : null; }).filter(Boolean).sort((a, b) => a.ms - b.ms); });
@@ -49,13 +50,13 @@ const SBcalc = {
       const la = lat * Math.PI / 180, ha = Math.acos(Math.cos(90.833 * Math.PI / 180) / (Math.cos(la) * Math.cos(dec)) - Math.tan(la) * Math.tan(dec)) * 180 / Math.PI;
       let off = -5; try { off = +new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' }).format(d) - 12; } catch (e) {}
       const noon = 720 - 4 * lon - eq; return { off, rise: (noon - 4 * ha) / 60 + off, set: (noon + 4 * ha) / 60 + off }; };
-    const HOURS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+    const HOURS = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
     return spots.map((s) => {
       const proxy = !!s.sc_slug && !/^own|same stretch/.test(String(s.sc_source || 'own'));
       const hasAlt = s.alt_offshore_deg !== null && s.alt_offshore_deg !== undefined && s.alt_offshore_deg !== '';
       const row = { spot: s.spot, name: s.name, state: s.state, band: s.band, drive: s.drive, pick: String(s.pick) !== 'false', sc_proxy: proxy };
       dates.forEach((date, i) => {
-        const p = `d${i}_`, slots = (s.sc_slug && scBy[s.sc_slug + '|' + date]) || [], slRaw = (slBy[s.spot] || [])[i] || '', sl = parseFt(slRaw);
+        const p = `d${i}_`, slots = (s.sc_slug && scBy[s.sc_slug + '|' + date]) || [], slRaw = (slBy[s.spot] || [])[slIdx(s.spot, date, i)] || '', sl = parseFt(slRaw);
         const sfDay = ((sfBy[s.spot] || {})[String(+date.slice(8))] || []).map(parseSf).filter(Boolean);
         const sfAt = (h) => { const want = h < 12 ? 'A' : 'P'; return (sfDay.find((x) => x.half === want) || sfDay[0] || null); };
         if (!slots.some((x) => x.ft) && !sl && !sfDay.length) { row[p + 'score'] = null; return; }
@@ -97,10 +98,10 @@ const SBcalc = {
         const on = bi >= 0; if (!on) bi = Math.max(0, hours.findIndex((x) => x.st !== 'dark')); if (bi > hours.length - 2) bi = 0;
         const h0 = hours[bi], h1 = hours[bi + 1], scMax = slots.map((x) => x.ft).filter(Boolean).sort((a, b) => b[1] - a[1])[0];
         const split = scMax && sl ? Math.abs((scMax[0] + scMax[1]) / 2 - (sl[0] + sl[1]) / 2) : 0;
-        const pills = [[6, 9], [10, 13], [14, 18]].map(([a, b]) => { const lit = hours.filter((x) => x.h >= a && x.h <= b && x.st !== 'dark');
+        const pills = [[5, 9], [10, 13], [14, 21]].map(([a, b]) => { const lit = hours.filter((x) => x.h >= a && x.h <= b && x.st !== 'dark');
           if (!lit.length) return { st: 'dark', score: 0 }; const ok = lit.filter((x) => x.st === 'ok');
           return ok.length * 2 >= lit.length ? { st: 'ok', score: Math.round(ok.reduce((q, x) => q + x.score, 0) / ok.length) } : { st: 'off', score: 0 }; });
-        const noon = hours[6];
+        const noon = hours.find((x) => x.h === 12) || hours[0];
         Object.assign(row, {
           [p + 'score']: on ? Math.min(h0.score, h1.score) : 0, [p + 'st']: on ? 'ok' : 'off', [p + 'why']: on ? '' : (() => { const c = {}; hours.filter((x) => x.st !== 'dark' && x.why).forEach((x) => { c[x.why] = (c[x.why] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || ''; })(),
           [p + 'ft']: fmt((h0.lo + h1.lo) / 2, (h0.hi + h1.hi) / 2), [p + 'mid']: Math.round((h0.lo + h1.lo + h0.hi + h1.hi) / 4 * 10) / 10,

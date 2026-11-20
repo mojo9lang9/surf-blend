@@ -36,7 +36,7 @@ a { color: inherit; }
 .buoy .v small { font-size: 15px; color: var(--muted); font-weight: 500; }
 .buoy .m { font-size: 12px; color: var(--muted); }
 /* main grid */
-.main { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 16px; align-items: start; }
+.main { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 16px; align-items: start; }
 @media (max-width: 960px) { .main { grid-template-columns: 1fr; } }
 .sel-head { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: start; gap: 18px; align-items: center; }
 @media (max-width: 460px) { .sel-head { grid-template-columns: 1fr; justify-items: start; } }
@@ -50,9 +50,10 @@ a { color: inherit; }
 .chip { font: inherit; font-size: 12px; padding: 5px 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--fg); color: var(--card); border-color: var(--fg); }
 .strip-wrap { overflow-x: auto; margin-top: 14px; }
-.strip { display: grid; grid-template-columns: 56px repeat(13, minmax(30px, 1fr)); gap: 2px; min-width: 460px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.strip { display: grid; grid-template-columns: 50px repeat(17, minmax(26px, 1fr)); gap: 2px; min-width: 520px; font-size: 11px; font-variant-numeric: tabular-nums; }
 .strip .rh { color: var(--muted); display: flex; align-items: center; }
-.strip .c { text-align: center; padding: 4px 0; border-radius: 6px; }
+.strip .c { text-align: center; padding: 4px 0; border-radius: 6px; white-space: nowrap; font-size: 10.5px; letter-spacing: -.02em; }
+.strip .c svg { vertical-align: -1px; }
 .strip .cell { color: #fff; font-weight: 600; }
 .desc { color: var(--muted); font-size: 13px; margin: 14px 0 0; }
 .desc b { color: var(--fg); font-weight: 500; }
@@ -69,7 +70,7 @@ a { color: inherit; }
 /* tide curve */
 .tide { grid-column: 2 / -1; position: relative; }
 .tide svg { display: block; }
-.tide-lbl { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); font-size: 10px; color: var(--muted); text-align: center; margin-top: 2px; }
+.tide-lbl { display: grid; grid-template-columns: repeat(17, minmax(0, 1fr)); font-size: 10px; color: var(--muted); text-align: center; margin-top: 2px; }
 .srcline { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 8px; font-variant-numeric: tabular-nums; }
 .srcline b { color: var(--fg); font-weight: 600; }
 .ringcol { display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -88,7 +89,7 @@ a { color: inherit; }
 .tmain { display: flex; gap: 12px; align-items: center; }
 .tmain .ringcol { width: 92px; }
 .tday { min-width: 0; }
-.tile .rdays { display: flex; justify-content: space-between; gap: 4px; margin-top: 0; }
+.tile .rdays { display: flex; justify-content: center; gap: 8px; margin-top: 0; }
 .tile .rday { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: var(--muted); }
 .zipform { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; flex-wrap: wrap; }
 .zipform label { color: var(--muted); }
@@ -101,9 +102,14 @@ a { color: inherit; }
 .alert-badge { font-size: 11px; color: var(--q3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .swell { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; font-size: 13px; margin-top: 4px; }
 .verdict a { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--muted); }
-.tile .ringcol.big { align-self: center; width: 150px; }
-.tile .ringcol.big .pills .pill { max-width: 46px; }
-.tmeta { margin-top: -6px; }
+.tile .ringcol.big { align-self: center; width: 104px; }
+.tname { font-weight: 600; text-align: center; }
+.tile .tmeta { text-align: center; margin-top: -6px; min-height: 1em; }
+.tile .alert-badge { text-align: center; }
+.slnote { margin-top: 12px; padding: 10px 12px; background: var(--soft); border-radius: 12px; display: flex; flex-direction: column; gap: 3px; }
+.slhead { font-weight: 600; font-size: 13px; }
+.tile .ringcol.big .pills .pill { max-width: 32px; }
+
 .srcline span { white-space: nowrap; }
 /* list */
 .list-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
@@ -159,7 +165,7 @@ a { color: inherit; }
 
   <p class="foot">Feet blend Surf Captain 50 / Surfline 25 / surf-forecast 25. Color is Surf Captain's clean / fair / choppy, stepped up where a headland or second face shelters the wind. Ranked by size × conditions, then drive. Triangles point the way wind and swell travel; wind shows above 5 mph.</p>
 </div>
-<script src="calc.js?v=20261120a"></script>
-<script src="app.js?v=20261120a"></script>
+<script src="calc.js?v=20261120c"></script>
+<script src="app.js?v=20261120c"></script>
 </body>
 </html>

@@ -58,7 +58,9 @@
    "NHZ014",
    "NHC015",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": false
  },
  {
   "spot": "straws",
@@ -119,7 +121,9 @@
    "NHZ014",
    "NHC015",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": false
  },
  {
   "spot": "rye-rocks",
@@ -180,7 +184,9 @@
    "NHZ014",
    "NHC015",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": false
  },
  {
   "spot": "fox-hill",
@@ -241,7 +247,9 @@
    "NHZ014",
    "NHC015",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": false
  },
  {
   "spot": "the-wall",
@@ -302,7 +310,9 @@
    "NHZ014",
    "NHC015",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": false
  },
  {
   "spot": "long-sands",
@@ -363,7 +373,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "short-sands",
@@ -424,7 +436,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "ogunquit",
@@ -485,7 +499,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "plum-island",
@@ -546,7 +562,9 @@
    "MAZ007",
    "MAC009",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": true
  },
  {
   "spot": "salisbury",
@@ -607,7 +625,9 @@
    "MAZ007",
    "MAC009",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": true
  },
  {
   "spot": "nahant",
@@ -659,7 +679,9 @@
    "MAC025",
    "ANZ230",
    "ANZ251"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": true
  },
  {
   "spot": "devereux",
@@ -716,7 +738,9 @@
    "MAC025",
    "ANZ230",
    "ANZ251"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": true
  },
  {
   "spot": "wells",
@@ -777,7 +801,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "goochs",
@@ -838,7 +864,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "gloucester",
@@ -894,7 +922,9 @@
    "MAZ007",
    "MAC009",
    "ANZ251"
-  ]
+  ],
+  "sl_region": "New Hampshire",
+  "sl_region_borrowed": true
  },
  {
   "spot": "fortunes-rock",
@@ -950,7 +980,9 @@
    "MEZ023",
    "MEC031",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "nantasket",
@@ -1001,7 +1033,9 @@
    "MAZ019",
    "MAC023",
    "ANZ251"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": true
  },
  {
   "spot": "old-orchard",
@@ -1057,7 +1091,9 @@
    "MEZ024",
    "MEC005",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "pine-point",
@@ -1113,7 +1149,9 @@
    "MEZ024",
    "MEC005",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "egypt",
@@ -1164,7 +1202,9 @@
    "MAZ019",
    "MAC023",
    "ANZ251"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": true
  },
  {
   "spot": "higgins",
@@ -1220,7 +1260,9 @@
    "MEZ024",
    "MEC005",
    "ANZ154"
-  ]
+  ],
+  "sl_region": "Maine",
+  "sl_region_borrowed": false
  },
  {
   "spot": "point-judith",
@@ -1265,7 +1307,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "salty-brine",
@@ -1310,7 +1354,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "scarborough",
@@ -1355,7 +1401,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "narragansett",
@@ -1400,7 +1448,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "matunuck",
@@ -1445,7 +1495,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "k38",
@@ -1490,7 +1542,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "green-hill",
@@ -1535,7 +1589,9 @@
    "RIZ006",
    "RIC009",
    "ANZ237"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "ruggles",
@@ -1581,7 +1637,9 @@
    "RIC005",
    "ANZ236",
    "ANZ235"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "second-beach",
@@ -1627,7 +1685,9 @@
    "RIC005",
    "ANZ236",
    "ANZ235"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "first-beach",
@@ -1673,7 +1733,9 @@
    "RIC005",
    "ANZ236",
    "ANZ235"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "south-shore",
@@ -1719,7 +1781,9 @@
    "RIC005",
    "ANZ236",
    "ANZ235"
-  ]
+  ],
+  "sl_region": "Rhode Island",
+  "sl_region_borrowed": false
  },
  {
   "spot": "deal",
@@ -1764,6 +1828,8 @@
    "NJZ014",
    "NJC025",
    "ANZ450"
-  ]
+  ],
+  "sl_region": "North New Jersey",
+  "sl_region_borrowed": false
  }
 ]
