@@ -18,25 +18,28 @@
   --rain: #5fb6f2; --accent: #6fc3a4; color-scheme: dark; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
-  padding-block: 20px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  padding-block: 14px 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 h1, h2, .num, .sel-name { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; }
-h1 { font-size: 26px; font-weight: 600; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
 h2 { font-size: 15px; font-weight: 600; margin: 0; }
 a { color: inherit; }
-.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 6px 12px; flex-wrap: wrap; }
+.top .sub { margin-top: 2px; }
 .sub { color: var(--muted); font-size: 13px; }
 .card { background: var(--card); border-radius: 20px; padding: 18px; min-width: 0; }
 .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 500; }
 /* buoys */
 .buoys { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 900px) { .buoys { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.buoy { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+.buoy { display: flex; flex-direction: column; gap: 4px; text-decoration: none; padding: 12px 16px; }
 .buoy .v { font-size: 30px; font-weight: 600; line-height: 1; display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
 .buoy .v small { font-size: 15px; color: var(--muted); font-weight: 500; }
 .buoy .m { font-size: 12px; color: var(--muted); }
 /* main grid */
-.main { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+.main { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 12px; align-items: start; }
+.rcol { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+#slbox .slnote { margin-top: 0; padding: 0; background: none; }
 @media (max-width: 960px) { .main { grid-template-columns: 1fr; } }
 .sel-head { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: start; gap: 18px; align-items: center; }
 @media (max-width: 460px) { .sel-head { grid-template-columns: 1fr; justify-items: start; } }
@@ -78,12 +81,9 @@ a { color: inherit; }
 .pills.sm { gap: 2px; margin-top: 3px; width: 40px; }
 .pills.sm .pill { height: 4px; }
 /* tile grid */
-.tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-@media (max-width: 940px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (max-width: 760px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 8px; }
 @media (max-width: 480px) { .tiles { grid-template-columns: 1fr; } }
-.tile { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; padding: 10px 6px; border-radius: 14px; background: var(--soft); cursor: pointer; min-width: 0; }
+.tile { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 10px 4px; border-radius: 14px; background: var(--soft); cursor: pointer; min-width: 0; }
 .tile:hover { outline: 1px solid var(--line); }
 .tile[aria-current="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
 .tile:focus-visible { outline: 2px solid var(--accent); }
@@ -103,7 +103,7 @@ a { color: inherit; }
 .alert-badge { font-size: 11px; color: var(--q3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .swell { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; font-size: 13px; margin-top: 4px; }
 .verdict a { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--muted); }
-.tile .ringcol.big { align-self: center; width: 104px; }
+.tile .ringcol.big { align-self: center; width: 104px; gap: 8px; }
 .tname { font-weight: 600; text-align: center; }
 .tile .tmeta { text-align: center; margin-top: -6px; min-height: 1em; }
 .tile .alert-badge { text-align: center; }
@@ -156,7 +156,7 @@ a { color: inherit; }
 
   <section class="main">
     <article class="card" id="sel" aria-live="polite"></article>
-    <article class="card" id="cam"></article>
+    <div class="rcol"><article class="card" id="cam"></article><article class="card" id="slbox" hidden></article></div>
   </section>
 
   <section class="card">
@@ -166,7 +166,7 @@ a { color: inherit; }
 
   <p class="foot">Feet blend Surf Captain 50 / Surfline 25 / surf-forecast 25. Color is Surf Captain's clean / fair / choppy, stepped up where a headland or second face shelters the wind. Ranked by size × conditions, then drive. Triangles point the way wind and swell travel; wind shows above 5 mph.</p>
 </div>
-<script src="calc.js?v=20261120e"></script>
-<script src="app.js?v=20261120e"></script>
+<script src="calc.js?v=20261120f"></script>
+<script src="app.js?v=20261120f"></script>
 </body>
 </html>
