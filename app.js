@@ -179,7 +179,7 @@
         al.length ? el('div', { class: 'alert-badge', title: al.map((a) => a.event).join(', '), text: '⚠ ' + al[0].event + (al.length > 1 ? ` +${al.length - 1}` : '') }) : null,
         el('div', { class: 'ringcol big' }, [ring(r, state.day, 77), r[p + 'score'] != null ? pills(r, state.day) : el('div', { class: 'pills' })]),
         el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 42), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k]) })])))]);
-      b.onclick = () => { state.spot = r.spot; state.cam = 0; try { history.replaceState(null, '', '#' + r.spot); } catch (e) {} render(); $('sel').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      b.onclick = () => { state.spot = r.spot; state.cam = 0; try { history.replaceState(null, '', '#' + r.spot); } catch (e) {} render(); };
       box.append(b);
     });
   }
