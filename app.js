@@ -26,7 +26,7 @@
     svg.append(sv('circle', { r: R, fill: 'none', stroke: has ? (st === 'off' ? 'var(--q0)' : color(sc)) : 'var(--track)', 'stroke-width': 9 }));
     const ftc = r[p + 'rain'] ? 'var(--rain)' : r[p + 'smoke'] ? 'var(--smoke)' : 'currentColor';
     const ft = has ? r[p + 'ft'] : '–';
-    const t = sv('text', { y: size >= 80 ? -2 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': size >= 80 ? (String(ft).length > 3 ? 22 : 28) : (String(ft).length > 3 ? 24 : 30), 'font-weight': 600, fill: ftc, 'font-family': 'Space Grotesk, Inter, sans-serif' });
+    const t = sv('text', { y: size >= 80 ? -2 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': size >= 80 ? (String(ft).length > 3 ? 22 : 28) : (String(ft).length > 3 ? 24 : 30), 'font-weight': 600, fill: ftc, 'font-family': '-apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, sans-serif' });
     t.textContent = ft === 'flat' ? 'flat' : ft + (has ? 'f' : ''); svg.append(t);
     if (has && r[p + 'per'] && size >= 80) {
       const s = sv('text', { x: -4, y: 22, 'text-anchor': 'middle', 'font-size': 12, fill: 'currentColor', opacity: .75 }); s.textContent = `@${r[p + 'per']}s${r[p + 'combo'] ? '*' : ''}`; svg.append(s);
@@ -86,15 +86,31 @@
     hours.forEach((x) => { const c = el('div', { class: 'c', title: `${x.dir} ${x.mph} mph (${x.wsrc})` });
       if (x.mph != null && x.mph > 5 && toDeg(x.dir) != null) { const s = sv('svg', { viewBox: '-7 -7 14 14', width: 12, height: 12 }); const gg = sv('g'); tri(gg, toDeg(x.dir), 'var(--fg)', 'none', 0); s.append(gg); c.append(s, document.createTextNode(' ' + x.mph)); }
       else c.append(document.createTextNode(x.mph != null ? '≤5' : '')); g.append(c); });
-    g.append(el('div', { class: 'rh', text: 'Tide ft' }));
-    hours.forEach((x) => g.append(el('div', { class: 'c', style: x.st === 'tide' ? 'background:var(--track)' : x.inTide && x.tide != null ? 'background:color-mix(in srgb, var(--q7) 16%, transparent)' : '', title: x.st === 'tide' ? x.why : x.inTide ? 'in this break\'s tide window' : '', text: x.tide != null ? `${x.tide}${x.rising ? '↑' : '↓'}` : '' })));
+    /* tide curve under the hours: green = this break's tide window, grey = tide rule turns it off */
+    g.append(el('div', { class: 'rh', text: 'Tide' }));
+    const tv = hours.filter((x) => x.tide != null), tc = el('div', { class: 'tide' });
+    if (tv.length > 1) {
+      const n = hours.length, W = n * 40, H = 54, lo = Math.min(...tv.map((x) => x.tide)) - 0.4, hi = Math.max(...tv.map((x) => x.tide)) + 0.4;
+      const X = (k) => (k + 0.5) * 40, Y = (v) => 8 + (H - 20) * (1 - (v - lo) / (hi - lo || 1));
+      const t = sv('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', width: '100%', height: H, role: 'img', 'aria-label': 'Tide through the day' });
+      hours.forEach((x, k) => { if (x.st === 'tide') t.append(sv('rect', { x: k * 40 + 1, y: 0, width: 38, height: H, rx: 5, fill: 'var(--q0)', opacity: .3 }));
+        else if (x.inTide && x.tide != null) t.append(sv('rect', { x: k * 40 + 1, y: 0, width: 38, height: H, rx: 5, fill: 'var(--q7)', opacity: .14 })); });
+      const pts = hours.map((x, k) => x.tide == null ? null : [X(k), Y(x.tide)]).filter(Boolean);
+      let d = `M${pts[0][0]},${pts[0][1]}`; for (let k = 1; k < pts.length; k++) { const [x0, y0] = pts[k - 1], [x1, y1] = pts[k], mx = (x0 + x1) / 2; d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`; }
+      t.append(sv('path', { d: d + ` L${pts[pts.length - 1][0]},${H} L${pts[0][0]},${H} Z`, fill: 'var(--rain)', opacity: .12, stroke: 'none' }));
+      t.append(sv('path', { d, fill: 'none', stroke: 'var(--rain)', 'stroke-width': 2, 'vector-effect': 'non-scaling-stroke' }));
+      tc.append(t);
+      const lab = el('div', { class: 'tide-lbl' }); hours.forEach((x, k) => { const prev = hours[k - 1], next = hours[k + 1];
+        const turn = x.tide != null && ((prev && next && prev.tide != null && next.tide != null && ((x.tide >= prev.tide && x.tide >= next.tide) || (x.tide <= prev.tide && x.tide <= next.tide))) || k === 0 || k === n - 1);
+        lab.append(el('span', { text: turn ? x.tide.toFixed(1) : '' })); }); tc.append(lab);
+    }
+    g.append(tc);
     return el('div', { class: 'strip-wrap' }, [g]);
   }
 
-  function pills(r, i) {
+  function pills(r, i, small) {
     const ps = r[`d${i}_pills`] || [];
-    return el('div', {}, [el('div', { class: 'pills' }, ps.map((p) => el('div', { class: 'pill', style: `background:${p.st === 'dark' ? 'var(--dk)' : p.st === 'off' ? 'var(--q0)' : color(p.score)}` }))),
-      el('div', { class: 'pill-lbls' }, ['am', 'mid', 'pm'].map((t) => el('span', { text: t })))]);
+    return el('div', { class: small ? 'pills sm' : 'pills' }, ps.map((p) => el('div', { class: 'pill', style: `background:${p.st === 'dark' ? 'var(--dk)' : p.st === 'off' ? 'var(--q0)' : color(p.score)}` })));
   }
 
   function selPanel() {
@@ -103,62 +119,72 @@
     const days = el('div', { class: 'days', role: 'group', 'aria-label': 'Day for this break' }, dates.map((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === i), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; return b; }));
     const has = r[p + 'score'] != null;
     const verdict = !has ? 'No forecast for this day.' : r[p + 'st'] === 'off' ? (w => w === 'flat' ? 'Flat all day' : 'Off: ' + w)(r[p + 'why'] || 'flat') : `Best ${r[p + 'window']} · ${r[p + 'wind']}${r[p + 'tide'] ? ' · tide ' + r[p + 'tide'] : ''}`;
-    box.append(el('div', { class: 'sel-head' }, [ring(r, i, 150), el('div', {}, [
+    const srcs = has ? el('div', { class: 'srcline' }, [['SC', r[p + 'sc']], ['SL', r[p + 'sl']], ['SF', r[p + 'sf']]].map(([k, v]) => el('span', {}, [el('b', { text: k }), document.createTextNode(' ' + String(v).replace(/ ft$/, ''))]))) : null;
+    box.append(el('div', { class: 'sel-head' }, [el('div', { class: 'ringcol' }, [ring(r, i, 150), has ? pills(r, i) : null]), el('div', {}, [
       el('div', { class: 'lbl', text: `${s.state} · ${s.drive} drive${s.sc_source && !/^own/.test(s.sc_source) ? ' · uses ' + s.sc_source : ''}` }),
       el('div', { class: 'sel-name', text: s.name }),
       el('div', { class: 'verdict', text: verdict }),
       has && r[p + 'swtxt'] ? el('div', { class: 'sub', text: `Swell ${r[p + 'swtxt']}` }) : null,
       has && r[p + 'wx'] ? el('div', { class: 'sub', text: r[p + 'wx'] }) : null,
-      has ? pills(r, i) : null])]));
+      srcs])]));
     box.append(el('div', { style: 'margin-top:14px' }, [days]));
     if (has) box.append(hourStrip(r, i));
-    if (has) box.append(el('div', { class: 'src' }, [
-      el('div', {}, [el('div', { class: 'lbl', text: 'Surf Captain 50%' }), el('div', { class: 'v', text: r[p + 'sc'] }), el('div', { class: 'sub', text: r[p + 'cond'] || '' })]),
-      el('div', {}, [el('div', { class: 'lbl', text: 'Surfline 25%' }), el('div', { class: 'v', text: r[p + 'sl'] })]),
-      el('div', {}, [el('div', { class: 'lbl', text: 'surf-forecast 25%' }), el('div', { class: 'v', text: r[p + 'sf'] })])]));
     const d = el('p', { class: 'desc' });
     if (s.shelter_note) d.append(el('b', { text: s.shelter_note + ' ' }));
     d.append(document.createTextNode(s.guide || ''));
     box.append(d);
     const L = [['Surf Captain', s.sc_page], ['Surfline', s.sl_page], ['surf-forecast', s.sf_page], ['Windy', s.windy_url]].filter((x) => x[1]);
     box.append(el('div', { class: 'links' }, L.map(([t, u]) => el('a', { href: u, target: '_blank', rel: 'noopener', text: t + ' ↗' }))));
-    camPanel(s);
+    if (camShown !== s.spot) { camShown = s.spot; camPanel(s); }
   }
+  let camShown = null;
 
-  function ranked() {
-    const p = `d${state.day}_`;
-    return rows.slice().sort((a, b) => (b.pick - a.pick) || ((b[p + 'score'] ?? -1) - (a[p + 'score'] ?? -1)) || (mins(byId[a.spot].drive) - mins(byId[b.spot].drive)));
+  /* best = size × conditions: clean ×1, fair ×0.6, choppy ×0.3; flat, off or no data = 0. Ties go to the shorter drive. */
+  const MULT = { 3: 1, 2: 0.6, 1: 0.3 };
+  const value = (r, i) => { const p = `d${i}_`; if (r[p + 'score'] == null) return -1; if (r[p + 'st'] === 'off') return 0; return (r[p + 'mid'] || 0) * (MULT[r[p + 'score']] || 0); };
+  function ranked(i = state.day) {
+    return rows.slice().sort((a, b) => (b.pick - a.pick) || (value(b, i) - value(a, i)) || (mins(byId[a.spot].drive) - mins(byId[b.spot].drive)));
   }
 
   function list() {
     const box = $('list'), dbox = $('days'); box.textContent = ''; dbox.textContent = '';
-    dates.forEach((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === state.day), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; state.spot = null; render(); }; dbox.append(b); });
+    dates.forEach((d, k) => { const b = el('button', { class: 'chip', 'aria-pressed': String(k === state.day), text: dayLbl(d, k, todayI) }); b.onclick = () => { state.day = k; render(); }; dbox.append(b); });
     ranked().forEach((r) => {
       const s = byId[r.spot], p = `d${state.day}_`;
       const meta = r[p + 'score'] == null ? 'no data' : r[p + 'st'] === 'off' ? 'off' : r[p + 'window'];
-      const b = el('button', { class: 'row' + (r.pick ? '' : ' ref'), 'aria-current': String(r.spot === state.spot) }, [
-        el('div', { class: 'r1' }, [el('span', { class: 'rname', text: `${s.name}, ${s.state}` }), el('span', { class: 'rmeta', text: `${s.drive} · ${meta}` })]),
-        el('div', { class: 'rdesc', text: s.guide || '' }),
-        el('div', { class: 'rdays' }, dates.map((d, k) => el('div', { class: 'rday' + (k === state.day ? ' on' : '') }, [ring(r, k, 46), el('span', { text: dayLbl(d, k, todayI) })])))]);
+      const others = dates.map((d, k) => k).filter((k) => k !== state.day);
+      const b = el('button', { class: 'tile' + (r.pick ? '' : ' ref'), 'aria-current': String(r.spot === state.spot) }, [
+        el('div', { class: 'r1' }, [el('span', { class: 'rname', text: s.name }), el('span', { class: 'rmeta', text: `${s.state} · ${s.drive}` })]),
+        el('div', { class: 'tmain' }, [el('div', { class: 'ringcol' }, [ring(r, state.day, 92), r[p + 'score'] != null ? pills(r, state.day) : null]),
+          el('div', { class: 'tday' }, [el('div', { class: 'lbl', text: dayLbl(dates[state.day], state.day, todayI) }), el('div', { class: 'rmeta', text: meta })])]),
+        el('div', { class: 'rdays' }, others.map((k) => el('div', { class: 'rday' }, [ring(r, k, 40), r[`d${k}_score`] != null ? pills(r, k, true) : el('div', { class: 'pills sm' }), el('span', { text: dayLbl(dates[k], k, todayI) })])))]);
       b.onclick = () => { state.spot = r.spot; state.cam = 0; try { history.replaceState(null, '', '#' + r.spot); } catch (e) {} render(); $('sel').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
       box.append(b);
     });
   }
 
-  function render() { if (!state.spot) state.spot = ranked()[0].spot; selPanel(); list(); }
+  function render() { if (!state.spot || !byId[state.spot]) state.spot = ranked(Math.max(0, todayI))[0].spot; selPanel(); list(); }
 
-  const get = (n, opt) => fetch(`data/${n}.json?v=${Date.now() / 6e5 | 0}`).then((r) => r.ok ? r.json() : opt ? [] : Promise.reject(n)).catch((e) => { if (opt) return []; throw e; });
-  Promise.all(['spots', 'sc', 'sl', 'wind', 'tides', 'model', 'alerts', 'buoys'].map((n) => get(n)).concat([get('sf', true)])).then(([sp, sc, sl, wind, tides, model, alerts, bu, sf]) => {
-    spots = sp; spots.forEach((s) => { byId[s.spot] = s; });
-    rows = SBcalc.fn(sp, sc, sl, wind, tides, model, alerts, sf).filter((r) => byId[r.spot]);
-    dates = [...new Set(sc.map((r) => r.date))].sort().slice(0, 5);
-    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-    todayI = Math.max(0, dates.indexOf(today)); if (dates.indexOf(today) < 0 && dates[0] > today) todayI = -1;
-    state.day = Math.max(0, todayI);
-    const cap = sc.map((r) => r.captured_at).filter(Boolean).sort().pop();
-    $('updated').textContent = cap ? `Updated ${new Date(cap).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })} ET` + (dates.indexOf(today) < 0 ? ' · today’s refresh hasn’t run yet' : '') : '';
-    const h = decodeURIComponent(location.hash.slice(1)); if (byId[h]) state.spot = h;
-    buoys(bu); render();
-    addEventListener('hashchange', () => { const k = decodeURIComponent(location.hash.slice(1)); if (byId[k] && k !== state.spot) { state.spot = k; state.cam = 0; render(); } });
-  }).catch((e) => { $('updated').innerHTML = `<span class="err">Couldn’t load ${e}. The morning refresh may be mid-update; reload in a minute.</span>`; });
+  let hashHooked = false;
+  function load(bust) {
+    const v = bust ? Date.now() : Date.now() / 6e5 | 0;
+    const get = (n, opt) => fetch(`data/${n}.json?v=${v}`, bust ? { cache: 'no-store' } : {}).then((r) => r.ok ? r.json() : opt ? [] : Promise.reject(n)).catch((e) => { if (opt) return []; throw e; });
+    $('updated').textContent = bust ? 'Reloading…' : $('updated').textContent;
+    return Promise.all(['spots', 'sc', 'sl', 'wind', 'tides', 'model', 'alerts', 'buoys'].map((n) => get(n)).concat([get('sf', true)])).then(([sp, sc, sl, wind, tides, model, alerts, bu, sf]) => {
+      spots = sp; byId = {}; spots.forEach((s) => { byId[s.spot] = s; });
+      rows = SBcalc.fn(sp, sc, sl, wind, tides, model, alerts, sf).filter((r) => byId[r.spot]);
+      const prevDate = dates[state.day];
+      dates = [...new Set(sc.map((r) => r.date))].sort().slice(0, 5);
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      todayI = dates.indexOf(today) >= 0 ? dates.indexOf(today) : 0;
+      state.day = bust && dates.indexOf(prevDate) >= 0 ? dates.indexOf(prevDate) : todayI;
+      const cap = sc.map((r) => r.captured_at).filter(Boolean).sort().pop();
+      $('updated').textContent = cap ? `Updated ${new Date(cap).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })} ET` + (dates.indexOf(today) < 0 ? ' · today’s refresh hasn’t run yet' : '') : '';
+      if (!bust) { const h = decodeURIComponent(location.hash.slice(1)); if (byId[h]) state.spot = h; }
+      buoys(bu); render();
+      if (!hashHooked) { hashHooked = true; addEventListener('hashchange', () => { const k = decodeURIComponent(location.hash.slice(1)); if (byId[k] && k !== state.spot) { state.spot = k; state.cam = 0; render(); } }); }
+    }).catch((e) => { $('updated').innerHTML = `<span class="err">Couldn’t load ${e}. The morning refresh may be mid-update; try again in a minute.</span>`; });
+  }
+  $('refresh').onclick = () => load(true);
+  load(false);
 })();

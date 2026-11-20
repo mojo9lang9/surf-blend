@@ -1,4 +1,4 @@
-# Northeast Surf Blend
+# New England Surf Dashboard
 
 Joe's NH–RI surf forecast at https://mojo9lang9.github.io/surf-blend/
 
