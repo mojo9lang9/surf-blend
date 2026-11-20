@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northeast Surf Blend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+:root {
+  --bg: #eef0ec; --card: #ffffff; --fg: #15191c; --muted: #67707a; --line: #e2e5e0; --soft: #f5f6f3;
+  --q0: #8d949b; --q3: #d64541; --q5: #e3a21a; --q7: #34a35a; --dk: #33383d;
+  --rain: #2f8fd6; --smoke: #d8bc6a; --track: rgba(127,127,127,.18); --accent: #1d5c4a;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1214; --card: #181c1f; --fg: #eef1f2; --muted: #9aa3ab; --line: #2a2f33; --soft: #1f2427;
+  --rain: #5fb6f2; --accent: #6fc3a4; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0f1214; --card: #181c1f; --fg: #eef1f2; --muted: #9aa3ab; --line: #2a2f33; --soft: #1f2427;
+  --rain: #5fb6f2; --accent: #6fc3a4; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding-block: 20px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, .num { font-family: "Space Grotesk", Inter, system-ui, sans-serif; }
+h1 { font-size: 26px; font-weight: 600; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h2 { font-size: 15px; font-weight: 600; margin: 0; }
+a { color: inherit; }
+.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.sub { color: var(--muted); font-size: 13px; }
+.card { background: var(--card); border-radius: 20px; padding: 18px; min-width: 0; }
+.lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 500; }
+/* buoys */
+.buoys { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .buoys { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.buoy { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+.buoy .v { font-size: 30px; font-weight: 600; line-height: 1; display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.buoy .v small { font-size: 15px; color: var(--muted); font-weight: 500; }
+.buoy .m { font-size: 12px; color: var(--muted); }
+/* main grid */
+.main { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 16px; align-items: start; }
+@media (max-width: 960px) { .main { grid-template-columns: 1fr; } }
+.sel-head { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: center; }
+@media (max-width: 460px) { .sel-head { grid-template-columns: 1fr; justify-items: start; } }
+.sel-name { font-size: 22px; font-weight: 600; margin: 2px 0 2px; font-family: "Space Grotesk", Inter, sans-serif; }
+.verdict { font-size: 14px; margin-top: 6px; }
+.pills { display: flex; gap: 4px; margin-top: 10px; }
+.pill { height: 8px; flex: 1; border-radius: 99px; max-width: 46px; }
+.pill-lbls { display: flex; gap: 4px; font-size: 10px; color: var(--muted); }
+.pill-lbls span { flex: 1; max-width: 46px; text-align: center; }
+.days { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: 12px; padding: 5px 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--card); border-color: var(--fg); }
+.strip-wrap { overflow-x: auto; margin-top: 14px; }
+.strip { display: grid; grid-template-columns: 56px repeat(13, minmax(30px, 1fr)); gap: 2px; min-width: 460px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.strip .rh { color: var(--muted); display: flex; align-items: center; }
+.strip .c { text-align: center; padding: 4px 0; border-radius: 6px; }
+.strip .cell { color: #fff; font-weight: 600; }
+.desc { color: var(--muted); font-size: 13px; margin: 14px 0 0; }
+.desc b { color: var(--fg); font-weight: 500; }
+.src { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.src div { background: var(--soft); border-radius: 12px; padding: 8px 10px; min-width: 0; }
+.src .v { font-weight: 600; font-size: 13px; }
+.links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; }
+/* cam */
+.cam-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.cam-frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: var(--soft); }
+.cam-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cam-under { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 99px; background: var(--fg); color: var(--card); text-decoration: none; font-size: 12px; font-weight: 500; }
+/* list */
+.list-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.row { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 8px; border-top: 1px solid var(--line); cursor: pointer; border-radius: 10px; }
+.row:hover { background: var(--soft); }
+.row[aria-current="true"] { background: var(--soft); box-shadow: inset 3px 0 0 var(--accent); }
+.row:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.r1 { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.rname { font-weight: 600; }
+.rmeta { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.rdesc { font-size: 12px; color: var(--muted); margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rdays { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.rday { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 10px; color: var(--muted); }
+.rday.on span { color: var(--fg); font-weight: 600; }
+.ref { opacity: .6; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.foot { font-size: 12px; color: var(--muted); }
+.err { color: var(--q3); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Northeast Surf Blend</h1>
+      <div class="sub" id="updated">Loading the morning read…</div>
+    </div>
+    <div class="legend" aria-label="Color key">
+      <span><span class="sw" style="background:var(--q7)"></span>clean</span>
+      <span><span class="sw" style="background:var(--q5)"></span>fair</span>
+      <span><span class="sw" style="background:var(--q3)"></span>choppy</span>
+      <span><span class="sw" style="background:var(--q0)"></span>flat or off</span>
+      <span><span class="sw" style="background:var(--dk)"></span>dark</span>
+      <span><b style="color:var(--rain)">blue ft</b> heavy rain</span>
+      <span><b style="color:var(--smoke)">cream ft</b> smoke</span>
+    </div>
+  </header>
+
+  <section class="buoys" id="buoys" aria-label="Buoys"></section>
+
+  <section class="main">
+    <article class="card" id="sel" aria-live="polite"></article>
+    <article class="card" id="cam"></article>
+  </section>
+
+  <section class="card">
+    <div class="list-head">
+      <h2>Every break, best first</h2>
+      <div class="days" id="days" role="group" aria-label="Day"></div>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <p class="foot">Height blends Surf Captain 50%, Surfline 25%, surf-forecast.com 25%. Color is Surf Captain's clean / fair / choppy, stepped up one where a headland or second face shelters the wind. Ranked by conditions, then drive from Keene. Triangles point the way wind and swell are traveling; wind shows only above 5 mph.</p>
+</div>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
