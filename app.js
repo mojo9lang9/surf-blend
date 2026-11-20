@@ -145,16 +145,16 @@
       srcs])]));
     box.append(el('div', { style: 'margin-top:14px' }, [days]));
     if (has) box.append(hourStrip(r, i));
-    const d = el('p', { class: 'desc' });
+    const note = (state.slNotes || []).find((n) => n.region === s.sl_region);
+    if (note) box.append(el('div', { class: 'slnote' }, [el('div', { class: 'lbl', text: `Surfline comments · ${new Date(note.captured_at).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' })}` }),
+      el('div', { class: 'slhead', text: note.headline }), ...String(note.body || '').split('\n').map((t) => el('div', { class: 'sub', text: t }))]));
+    const ab = $('slbox'); ab.textContent = ''; ab.hidden = false;
+    const d = el('p', { class: 'desc', style: 'margin-top:0' });
     if (s.shelter_note) d.append(el('b', { text: s.shelter_note + ' ' }));
     d.append(document.createTextNode(s.guide || ''));
-    box.append(d);
-    const note = (state.slNotes || []).find((n) => n.region === s.sl_region);
-    const slb = $('slbox'); slb.textContent = ''; slb.hidden = !note;
-    if (note) slb.append(el('div', { class: 'slnote' }, [el('div', { class: 'lbl', text: `Surfline ${note.region} forecast${s.sl_region_borrowed ? ' (nearest region)' : ''} · ${new Date(note.captured_at).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' })}` }),
-      el('div', { class: 'slhead', text: note.headline }), ...String(note.body || '').split('\n').map((t) => el('div', { class: 'sub', text: t }))]));
+    ab.append(el('div', { class: 'lbl', text: 'About this break', style: 'margin-bottom:6px' }), d);
     const L = [['Surf Captain', s.sc_page], ['Surfline', s.sl_page], ['surf-forecast', s.sf_page]].filter((x) => x[1]);
-    box.append(el('div', { class: 'links' }, L.map(([t, u]) => el('a', { href: u, target: '_blank', rel: 'noopener', text: t + ' ↗' }))));
+    ab.append(el('div', { class: 'links' }, L.map(([t, u]) => el('a', { href: u, target: '_blank', rel: 'noopener', text: t + ' ↗' }))));
     if (camShown !== s.spot) { camShown = s.spot; camPanel(s); }
   }
   let camShown = null;
