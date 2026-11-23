@@ -92,6 +92,10 @@ const SBcalc = {
             noaa: nw ? `${nw.dir || 'calm'} ${nw.mph}` : '', m_wind: m ? `${toPt(m.wind_deg)} ${m.wind_mph}` : '', m_sw: m ? `${m.swell_ft} ft @ ${m.swell_s}s ${toPt(m.swell_deg)}` : '',
             score: st === 'ok' ? lv : 0 };
         });
+        /* day color = what most daylight hours are (ties go to the worse level) */
+        const mode = (a) => { const n = {}; a.forEach((v) => { n[v] = (n[v] || 0) + 1; }); return +Object.keys(n).sort((x, y) => n[y] - n[x] || x - y)[0]; };
+        const lit = hours.filter((x) => x.st !== 'dark'), okH = lit.filter((x) => x.st === 'ok');
+        const dayOn = okH.length * 2 >= lit.length && okH.length > 0, dayScore = dayOn ? mode(okH.map((x) => x.score)) : 0;
         let best = -1, bi = -1;
         for (let k = 0; k < hours.length - 1; k++) { const a = hours[k], b = hours[k + 1]; if (a.st !== 'ok' || b.st !== 'ok') continue;
           const v = Math.min(a.score, b.score) * 1000 + (a.inTide + b.inTide) * 50 + (a.lo + a.hi + b.lo + b.hi); if (v > best) { best = v; bi = k; } }
@@ -100,10 +104,10 @@ const SBcalc = {
         const split = scMax && sl ? Math.abs((scMax[0] + scMax[1]) / 2 - (sl[0] + sl[1]) / 2) : 0;
         const pills = [[5, 9], [10, 13], [14, 21]].map(([a, b]) => { const lit = hours.filter((x) => x.h >= a && x.h <= b && x.st !== 'dark');
           if (!lit.length) return { st: 'dark', score: 0 }; const ok = lit.filter((x) => x.st === 'ok');
-          return ok.length * 2 >= lit.length ? { st: 'ok', score: Math.round(ok.reduce((q, x) => q + x.score, 0) / ok.length) } : { st: 'off', score: 0 }; });
+          return ok.length * 2 >= lit.length ? { st: 'ok', score: mode(ok.map((x) => x.score)) } : { st: 'off', score: 0 }; });
         const noon = hours.find((x) => x.h === 12) || hours[0];
         Object.assign(row, {
-          [p + 'score']: on ? Math.min(h0.score, h1.score) : 0, [p + 'st']: on ? 'ok' : 'off', [p + 'why']: on ? '' : (() => { const c = {}; hours.filter((x) => x.st !== 'dark' && x.why).forEach((x) => { c[x.why] = (c[x.why] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || ''; })(),
+          [p + 'score']: on ? (dayOn ? dayScore : Math.min(h0.score, h1.score)) : 0, [p + 'st']: on ? 'ok' : 'off', [p + 'winscore']: on ? Math.min(h0.score, h1.score) : 0, [p + 'why']: on ? '' : (() => { const c = {}; hours.filter((x) => x.st !== 'dark' && x.why).forEach((x) => { c[x.why] = (c[x.why] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || ''; })(),
           [p + 'ft']: fmt((h0.lo + h1.lo) / 2, (h0.hi + h1.hi) / 2), [p + 'mid']: Math.round((h0.lo + h1.lo + h0.hi + h1.hi) / 4 * 10) / 10,
           [p + 'per']: h0.per, [p + 'sdir']: h0.sdir, [p + 'sdeg']: toDeg(h0.sdir), [p + 'combo']: h0.combo, [p + 'swtxt']: h0.swtxt,
           [p + 'window']: on ? `${hr(h0.h)}–${hr(h0.h + 2)}` : 'off all day',

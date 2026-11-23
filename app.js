@@ -4,7 +4,7 @@
   const BUOYS = ['44098', '44007', '44013', '44097'];
   const POINTS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
   const toDeg = (d) => { const i = POINTS.indexOf(String(d || '').toUpperCase()); return i < 0 ? null : i * 22.5; };
-  const TRI = 'M0,-5.5 L4.8,4.6 L-4.8,4.6 Z'; /* one shape and size for wind and swell */
+  const TRI = 'M0,-7 L5,-1 L1.6,-1 L1.6,7 L-1.6,7 L-1.6,-1 L-5,-1 Z'; /* arrow with a tail, same for wind and swell */ /* one shape and size for wind and swell */
   const $ = (id) => document.getElementById(id);
   const el = (tag, attrs = {}, kids = []) => { const e = document.createElement(tag); for (const k in attrs) { if (k === 'text') e.textContent = attrs[k]; else if (k === 'html') e.innerHTML = attrs[k]; else e.setAttribute(k, attrs[k]); } [].concat(kids).forEach((c) => c && e.append(c)); return e; };
   const sv = (tag, attrs = {}) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
